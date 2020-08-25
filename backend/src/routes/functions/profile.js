@@ -2,7 +2,6 @@ import { Router } from "express";
 import path from "path";
 import multer from "multer";
 import fs from "fs-extra";
-import filesystem from "fs";
 
 //validate
 import { isLogged } from "../../helpers/middlewares";
@@ -25,7 +24,7 @@ router.post(
     const imageTemPath = req.file.path;
     const ext = path.extname(req.file.originalname);
 
-    await filesystem.mkdir(`src/public/images/icons/${decoded._id}/`, (e) => {
+    await fs.mkdir(`src/public/images/icons/${decoded._id}/`, (e) => {
       if (!e || (e && e.code === "EEXIST")) {
         console.log("existe el archivo");
       } else {
@@ -84,14 +83,18 @@ router.post(
           message: "update information successfully",
         });
       }
-      return res.status(500).json({ success: false, message: "update failed information" });
+      return res
+        .status(500)
+        .json({ success: false, message: "update failed information" });
     } catch (error) {
-      return res.status(500).json({ success: false, message: "internar error", error });
+      return res
+        .status(500)
+        .json({ success: false, message: "internar error", error });
     }
   }
 );
 
-//para visitar otros perfiles 
+//para visitar otros perfiles
 router.post("/otherUserPosts", async (req, res) => {
   const { idUser } = req.body;
   try {
