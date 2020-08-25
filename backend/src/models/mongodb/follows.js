@@ -1,9 +1,17 @@
-const {Schema,model} = require("mongoose");
+const { Schema, model } = require("mongoose");
 
 let follows_schema = new Schema({
-  idUser:{type:String,require:[true,"id user is required"]},
-  follows:{type:Array},
+  idUser: {
+    type: Schema.Types.ObjectId,
+    ref: "users",
+  },
+  follows: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "users",
+    },
+  ],
 });
 
-const follows = model("follows",follows_schema);
+const follows = model("follows", follows_schema);
 module.exports = follows;
