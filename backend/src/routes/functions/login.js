@@ -45,18 +45,12 @@ router.post(
             { expiresIn: 60 * 60 * 24 * 30 }
           );
 
-          return res
-            .status(200)
-            .json({ success: true, message: "User login", token });
+          return res.json({ success: true, message: "User login", token });
         } else {
-          return res
-            .status(404)
-            .json({ success: false, message: "Incorrect password" });
+          return res.json({ success: false, message: "Incorrect password" });
         }
       } else {
-        return res
-          .status(404)
-          .json({ success: false, message: "Incorrect user name" });
+        return res.json({ success: false, message: "Incorrect user name" });
       }
     } catch (error) {
       return res.status(401).json({

@@ -9,7 +9,7 @@
       <v-btn class="ma-2" text icon color="red lighten-2" to="/home" >
         <v-icon>fas fa-door-open</v-icon>
       </v-btn>
-      <v-btn class="ma-2" text icon color="red lighten-2" :to="'/profile/'+dataUser._id" >
+      <v-btn class="ma-2" text icon color="red lighten-2" :to="'/profile/'+dataUser" >
         <v-icon>fas fa-user-circle</v-icon>
       </v-btn>
         

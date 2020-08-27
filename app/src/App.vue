@@ -2,9 +2,9 @@
   <v-app class="dd">
     <navbar/>
     <v-container>
-      <v-content>
+      <v-main>
         <router-view/>
-      </v-content>
+      </v-main>
     </v-container>
   </v-app>
 </template>
@@ -21,7 +21,7 @@ export default {
     const session = await localStorage.getItem("session")
     if(session){
       const value = await jwt_decode(session);
-      this.setDataUser(value.data)
+      this.setDataUser(value.id)
       this.setToken(session)
     }
   },

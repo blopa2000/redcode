@@ -2,7 +2,7 @@ import { Router } from "express";
 import path from "path";
 import multer from "multer";
 import fs from "fs-extra";
-
+import moment from "moment";
 //validate
 import { isLogged } from "../../helpers/middlewares";
 import { check, validationResult } from "express-validator";
@@ -109,17 +109,26 @@ router.post("/publicationsOfFollow", isLogged, async (req, res) => {
     const myFollows = await follows.findOne({ idUser: decoded._id });
     const data = [];
     for (const id of myFollows.follows) {
-      let publicationOfUser = await user
+      let publication = await user
         .findOne({ _id: id })
         .populate("publications");
 
-      data.push({ publicationOfUser });
+      for (const item in publication.publications) {
+        const find = publication.publications[item].reactions.findIndex(
+          (element) => {
+            return element == decoded._id;
+          }
+        );
+        publication.publications[item].isLike = find < 0 ? false : true;
+        publication.publications[item]["timestamp"] = moment(
+          publication.publications[item].timestamp
+        )
+          .startOf("minute")
+          .fromNow();
+      }
+      data.push(publication);
     }
-    res.json({
-      data,
-      message: "follow-up posts are successful",
-      success: true,
-    });
+    res.json(data);
   } catch (error) {
     res.json({ message: "get error publicationser", success: false, error });
   }

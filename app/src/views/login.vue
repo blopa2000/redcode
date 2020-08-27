@@ -1,14 +1,14 @@
 <template>
   <div class="login" v-if="!dataUser" >
-    <v-container >
-      <v-row>
-        <v-col md="6">
-          <v-card outlined >
-            aca ira una imagen del sistema
+    <v-container>
+      <v-row justify="center" >
+        <v-col col="12" md="6" lg="5" class="col-hidden" >
+          <v-card elevation="0" class="text-center py-9 " style="background-color: rgb(243, 243, 243)">
+            <img class="svg_chat_style" :src="svgChat" alt="" >
           </v-card>
         </v-col>
-        <v-col md="6">
-          <v-card outlined >
+        <v-col col="12" md="6" lg="5">
+          <v-card outlined class="text-center " >
             <v-container>
               <div class="mb-5 text-center">
                 <h1>redcode</h1>
@@ -35,6 +35,8 @@
 import axios from "axios"
 import jwt_decode from "jwt-decode"
 import {mapMutations, mapState} from "vuex"
+import chat from "@/assets/chat.svg"
+
 export default {
   data() {
     return {
@@ -52,13 +54,14 @@ export default {
         v => !!v || 'Name is required',
         v => v.length >= 4 || 'password is invalid',
       ],
+      svgChat:chat,
     }
   },
   async created() {
     const session = localStorage.getItem('session');
     if (session) {
       const value = await jwt_decode(session);
-      this.setDataUser(value.data)
+      this.setDataUser(value.id)
       this.$router.push("/");
     }
   },
@@ -73,11 +76,12 @@ export default {
         if(db.data.success){
           const value = await jwt_decode(db.data.token);
           localStorage.setItem('session',db.data.token)
-          this.setDataUser(value.data);
-          this.setToken(db.data.token)
+          this.setDataUser(value.id);
+          this.setToken(db.data.token);
           this.success = db.data.success;
           this.$router.push("/");
         }else{
+          console.log(db.data.message);
           this.success = db.data.success;
           this.dataMessage = db.data.message;
           setTimeout(()=>{
@@ -90,10 +94,20 @@ export default {
   },
 }
 </script>
+
 <style  scoped>
 .login{
   height: 100vh;
   display: flex;
   align-items: center;
+  overflow: hidden;
+}
+.svg_chat_style{
+  max-width: 20em;
+}
+@media (max-width: 700px) {
+  .col-hidden{
+    display: none;
+  }
 }
 </style>
