@@ -113,19 +113,6 @@ router.post("/publicationsOfFollow", isLogged, async (req, res) => {
         .findOne({ _id: id })
         .populate("publications");
 
-      for (const item in publication.publications) {
-        const find = publication.publications[item].reactions.findIndex(
-          (element) => {
-            return element == decoded._id;
-          }
-        );
-        publication.publications[item].isLike = find < 0 ? false : true;
-        publication.publications[item]["timestamp"] = moment(
-          publication.publications[item].timestamp
-        )
-          .startOf("minute")
-          .fromNow();
-      }
       data.push(publication);
     }
     res.json(data);
@@ -139,11 +126,11 @@ router.post("/likePublication", isLogged, async (req, res) => {
   const { idPublication } = req.body;
 
   try {
-    const publicationData = await publication.findOne({ _id: idPublication });
-    const findUserId = publicationData.reactions.findIndex(
-      (element) => element == decoded._id
-    );
-
+    const publicationData = await publication.findOne({ "_id": idPublication });
+    const findUserId =  publicationData.reactions.findIndex((element) => { 
+      return String(element) == String(decoded._id)
+    });
+    
     if (findUserId < 0) {
       const likeData = await publication.updateOne(
         { _id: idPublication },

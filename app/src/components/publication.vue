@@ -6,8 +6,8 @@
       max-width="500"
       loader-height="2"
       :loading="loading"
-      v-for="(publication, id) of user.publications"
-      :key="id"
+      v-for="(publication, indexPublication) of user.publications"
+      :key="indexPublication"
     >
       <v-img
         class="align-end grey lighten-2"
@@ -46,7 +46,7 @@
 
         <v-list-item-content>
           <span class="px-auto text-right text--disabled">{{
-            publication.timestamp
+            publication.timestamp | formatTimestamp
           }}</span>
         </v-list-item-content>
       </v-list-item>
@@ -56,8 +56,8 @@
       <v-card-actions>
         <v-btn
           icon
-          @click="updateLike(publication._id, index, idPublication)"
-          :color="publication.isLike ? 'red' : 'blue'"
+          @click="updateLike(publication._id, indexUser, indexPublication)"
+          :color="isLike(publication.reactions)"
         >
           <v-icon>fas fa-heart</v-icon>
         </v-btn>
@@ -73,19 +73,55 @@
   </v-container>
 </template>
 <script>
+import moment from "moment";
+import { mapState } from "vuex";
+import axios from "axios";
 export default {
   name: "publication",
 
   props: {
     user: Object,
-    item: Object,
-    index: Number,
     loading: Boolean,
+    indexUser: Number,
+    item: Object,
   },
   data() {
     return {
       changeViewActive: "comments",
     };
+  },
+  methods: {
+    isLike(reactions) {
+      const find = reactions.findIndex((element) => {
+        return element == this.dataUser;
+      });
+      return find < 0 ? "blue" : "red";
+    },
+    async updateLike(idPublication, indexUser, IndexPublication) {
+      const updateLike = await axios.post(
+        "/functs/likePublication",
+        { idPublication: idPublication },
+        { headers: { Authorization: this.token } }
+      );
+
+      if (updateLike.data.success) {
+        this.$emit("updateLike", {
+          islike: updateLike.data.isLike,
+          user: indexUser,
+          publication: IndexPublication,
+        });
+      }
+    },
+  },
+  computed: {
+    ...mapState(["dataUser", "token"]),
+  },
+  filters: {
+    formatTimestamp(timestamp) {
+      return moment(timestamp)
+        .startOf("minutes")
+        .fromNow();
+    },
   },
 };
 </script>

@@ -3,7 +3,12 @@
     <v-row>
       <v-col col="4"> </v-col>
       <v-col col="4" v-for="(item, index) of publications" :key="index">
-        <publication :user="item" :loading="loading" />
+        <publication
+          :user="item"
+          :loading="loading"
+          :indexUser="index"
+          @updateLike="updateLike"
+        />
       </v-col>
       <v-col col="4"> </v-col>
     </v-row>
@@ -13,7 +18,6 @@
 <script>
 import { mapState } from "vuex";
 import publication from "@/components/publication";
-//import moment from "moment"
 import axios from "axios";
 export default {
   name: "Home",
@@ -47,23 +51,20 @@ export default {
       this.publications = response.data;
       this.loading = false;
     },
-    // async updateLike(id,idFollow,idPublication){
-    //   const updateLike = await axios.post("/functs/likePublication",{"idPublication":id},{headers:{"Authorization":this.token}})
-    //   if(updateLike.data.success){
-    //     if (updateLike.data.isLike) {
-    //       //agregar
-    //       this.publications[idFollow].publications[idPublication].reactions.push(this.dataUser._id)
-    //     }else{
-    //       //eliminar
-    //       const id = this.publications[idFollow].publications[idPublication].reactions.findIndex(id => id == this.dataUser._id)
-    //       this.publications[idFollow].publications[idPublication].reactions.splice(id,1)
-    //     }
-    //     this.publications[idFollow].publications[idPublication].isLike = updateLike.data.isLike
-    //   }
-    // },
-    // changeView(view){
-    //   this.changeViewActive = view
-    // }
+    updateLike(values) {
+      if (values.islike) {
+        this.publications[values.user].publications[
+          values.publication
+        ].reactions.push(this.dataUser);
+      } else {
+        const id = this.publications[values.user].publications[
+          values.publication
+        ].reactions.findIndex((id) => id == this.dataUser);
+        this.publications[values.user].publications[
+          values.publication
+        ].reactions.splice(id, 1);
+      }
+    },
   },
 };
 </script>
