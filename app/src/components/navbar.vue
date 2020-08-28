@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-app-bar v-if="activeNavbar != 'login'" fixed app dense :elevation="1.0" >
+    <v-app-bar v-if="activeNavbar != 'login'|| dataUser != ''" fixed app dense :elevation="1.0" >
       <h1>redcode</h1>
       <v-spacer />
       <input placeholder="sherch">

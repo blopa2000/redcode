@@ -5,8 +5,8 @@
       <v-list-item>
         <v-list-item-content>
           <v-list-item-title>user info</v-list-item-title>
-          <v-list-item-subtitle class="d-flex align-center">
-            <v-btn icon color="accent" class="mr-5" @click="actions('configurationProfile')"> 
+          <v-list-item-subtitle class="d-flex align-center" @click="actions('configurationProfile')">
+            <v-btn icon color="accent" class="mr-5" > 
               <v-icon>far fa-user</v-icon> 
             </v-btn>  
             Edit profile
@@ -19,9 +19,6 @@
 </template>
 <script>
 export default {
-  props:{
-
-  },
   data() {
     return {
       modelActions:null,

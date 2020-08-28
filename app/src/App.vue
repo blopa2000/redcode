@@ -1,5 +1,5 @@
 <template>
-  <v-app class="dd">
+  <v-app class="background">
     <navbar/>
     <v-container>
       <v-main>
@@ -38,7 +38,7 @@ export default {
 </script>
 
 <style >
-.dd{
+.background{
   background-color: rgb(243, 243, 243)!important;
 }
 /* p,strong{

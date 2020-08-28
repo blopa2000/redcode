@@ -62,12 +62,12 @@ export default {
     async uploadPublication(){
       if (this.$refs.form.validate() && this.publication) {
         this.loading = true
-        //esta API web al momento 
+        //API web FormData
         let data = new FormData();
 
         data.append("publicData",this.publication);
         data.append("description",this.description);
-        //debugger
+
         const values = await axios.post('/functs/publication',data,{headers:{"Authorization":this.token}});
         if (values.data.success) {
           this.$emit('saveImages', values.data.success)

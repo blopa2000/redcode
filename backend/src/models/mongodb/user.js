@@ -1,7 +1,7 @@
 const { Schema, model } = require("mongoose");
 const uniqued = require("mongoose-unique-validator");
 
-var possible_values = ["M", "F"];
+var possible_values = ["M", "F",""];
 var email_match = [
   /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/,
   "Email is not valid",

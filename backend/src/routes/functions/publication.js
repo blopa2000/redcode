@@ -83,24 +83,29 @@ router.post(
   }
 );
 
-router.get("/publication", async (req, res) => {
+router.post("/publications", async (req, res) => {
   const { id } = req.body;
-  const profile = await user
-    .find({ _id: id })
-    .sort({ timestamp: -1 })
-    .populate("publications");
-  if (profile.length) {
+  try {
+    const publications = await publication
+      .find({ idUser: id })
+      .sort({ timestamp: -1 });
+    if (publications != null) {
+      return res.json({
+        publications,
+        message: "data user",
+        success: true,
+      });
+    }
     return res.json({
-      profile,
-      message: "data user",
-      success: true,
+      message: "user is no defined",
+      success: false,
+    });
+  } catch (error) {
+    res.json({
+      message: "internal error",
+      success: false,
     });
   }
-  return res.json({
-    info: ownPublications,
-    message: "user is no defined",
-    success: false,
-  });
 });
 
 router.post("/publicationsOfFollow", isLogged, async (req, res) => {
@@ -126,11 +131,11 @@ router.post("/likePublication", isLogged, async (req, res) => {
   const { idPublication } = req.body;
 
   try {
-    const publicationData = await publication.findOne({ "_id": idPublication });
-    const findUserId =  publicationData.reactions.findIndex((element) => { 
-      return String(element) == String(decoded._id)
+    const publicationData = await publication.findOne({ _id: idPublication });
+    const findUserId = publicationData.reactions.findIndex((element) => {
+      return String(element) == String(decoded._id);
     });
-    
+
     if (findUserId < 0) {
       const likeData = await publication.updateOne(
         { _id: idPublication },

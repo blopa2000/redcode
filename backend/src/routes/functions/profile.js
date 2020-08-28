@@ -41,12 +41,13 @@ router.post(
 
     if (ext == ".png" || ext == ".jpg" || ext == ".jpeg" || ext == ".gif") {
       await fs.rename(imageTemPath, targetPath);
-      const updateAvatarUser = await user.updateOne(
+      const updateAvatarUser = await user.findOneAndUpdate(
         { _id: decoded._id },
-        { avatar: PathImages }
+        { avatar: PathImages },
+        { new: true }
       );
-      if (updateAvatarUser.nModified) {
-        return res.status(200).json({ message: "avatar save", success: true });
+      if (updateAvatarUser != null) {
+        return res.status(200).json({ message: "avatar save", success: true,avatar:updateAvatarUser.avatar });
       }
       return res.json({ message: "internar error", success: false });
     } else {
@@ -64,19 +65,26 @@ router.post(
     check("firstName").not().isEmpty().withMessage("fist name is required"),
     check("lastName").not().isEmpty().withMessage("last name is required"),
     check("email").not().isEmpty().withMessage("email is required"),
-    check("dateBirth").not().isEmpty().withMessage("date birth is required"),
-    check("sex").not().isEmpty().withMessage("sex is required"),
   ],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res
-        .status(404)
-        .json({ success: false, status: 401, errors: errors.array() });
+        .json({ success: false, status: 404, errors: errors.array() });
     }
     const decoded = req.token;
     try {
-      const updateUser = await user.updateOne({ _id: decoded._id }, req.body);
+
+      const updateUser = await user.updateOne({ _id: decoded._id }, {
+        username:req.body.username,
+        firstName:req.body.firstName,
+        lastName:req.body.lastName,
+        email:req.body.email,
+        dateBirth:req.body.dateBirth,
+        sex:req.body.sex,
+        description:req.body.description
+      });
+
       if (updateUser.nModified) {
         return res.json({
           success: true,
@@ -84,7 +92,6 @@ router.post(
         });
       }
       return res
-        .status(500)
         .json({ success: false, message: "update failed information" });
     } catch (error) {
       return res
@@ -94,18 +101,17 @@ router.post(
   }
 );
 
-//para visitar otros perfiles
-router.post("/otherUserPosts", async (req, res) => {
-  const { idUser } = req.body;
+//para visitar perfiles
+router.post("/getProfile/:id", async (req, res) => {
+  const decoded = req.params.id
   try {
-    const userInfo = await user.findOne({ _id: idUser });
-
-    if (userInfo != null) {
-      return res.json({ message: "another user", success: true, userInfo });
+    const profile = await user.findOne({ _id: decoded });
+    if (profile != null) {
+      return res.json({message:"user found",success:true,profile})
     }
-    return res.json({ message: "that user is not found", success: false });
+    return res.json({message:"user not found",success:false})
   } catch (error) {
-    return res.json({ message: "internar error", success: false, error });
+    res.json({message:"internal error",success:false})
   }
 });
 

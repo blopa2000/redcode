@@ -34,7 +34,6 @@ export default {
   },
   watch: {
     reactions(){
-      console.log("se ejecuto el watch por que ya no esta el usuario");
       this.reactionsData()
     }
   },
@@ -42,8 +41,8 @@ export default {
     async reactionsData(){
       this.people = [];
       for (const item of this.reactions) {
-        const data = await axios.post("/functs/otherUserPosts",{idUser:item});
-        this.people.push(data.data.userData);
+        const data = await axios.post(`/functs/getProfile/${item}`);
+        this.people.push(data.data.profile);
       }
     },
     anotherProfile(id){
