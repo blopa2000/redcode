@@ -6,7 +6,7 @@ import fs from "fs-extra";
 //validate
 import { isLogged } from "../../helpers/middlewares";
 import { check, validationResult } from "express-validator";
-import { serverUri, tokenKey } from "../../keys";
+import { serverUri } from "../../keys";
 
 //mongo
 import { user, follows } from "../../models/mongo";

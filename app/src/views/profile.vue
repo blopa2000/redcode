@@ -106,9 +106,9 @@
       @updateProfile="profile = $event"
     />
     <ModalImage
-      :activeModalImage="activeModalImage"
+      :enableModalImage="enableModalImage"
       :dataImage="dataImage"
-      @changeActive="activeModalImage = $event"
+      @changeActive="enableModalImage = $event"
       @updateLike="updateLike"
     />
     <!-- /components -->
@@ -134,7 +134,7 @@ export default {
       exists: false,
       activeModal: false,
       activeModalConfig: false,
-      activeModalImage: false,
+      enableModalImage: false,
       dataImage: {},
       dataUserpublication: [],
       isFollow: false,
@@ -238,7 +238,7 @@ export default {
       this.activeModalConfig = true;
     },
     showImage(item, index) {
-      this.activeModalImage = true;
+      this.enableModalImage = true;
       this.dataImage = item;
       this.IndexImage = index;
     },

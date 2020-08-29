@@ -82,7 +82,7 @@ export default {
     comments,
   },
   props: {
-    activeModalImage: Boolean,
+    enableModalImage: Boolean,
     dataImage: Object,
   },
   data() {
@@ -94,7 +94,7 @@ export default {
     ...mapState(["dataUser", "token"]),
     show: {
       get() {
-        return this.activeModalimage;
+        return this.enableModalImage;
       },
       set(value) {
         this.changeViewActive = "comments";
@@ -131,8 +131,6 @@ export default {
       return find < 0 ? "blue" : "red";
     },
     changeView(view) {
-      console.log(view);
-
       this.changeViewActive = view;
     },
   },

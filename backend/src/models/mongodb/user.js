@@ -1,12 +1,13 @@
 const { Schema, model } = require("mongoose");
 const uniqued = require("mongoose-unique-validator");
-
+import { serverUri } from "../../keys";
 var possible_values = ["M", "F",""];
 var email_match = [
   /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/,
   "Email is not valid",
 ];
 
+const avatarDefaut = `${serverUri}/images/icons/default.jpg`
 let user_schema = new Schema({
   username: {
     type: String,
@@ -15,7 +16,7 @@ let user_schema = new Schema({
   },
   avatar: {
     type: String,
-    default: "../../public/images/icons/default.jpg",
+    default: avatarDefaut,
   },
   password: {
     type: String,
