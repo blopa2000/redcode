@@ -56,29 +56,43 @@
       <v-card-actions>
         <v-btn
           icon
-          @click="updateLike(publication._id, indexUser, indexPublication)"
+          @click="updateLike(publication._id, indexPublication)"
           :color="isLike(publication.reactions)"
         >
           <v-icon>fas fa-heart</v-icon>
         </v-btn>
-        <v-btn text class="btn-person" @click="changeView('likes')">
-          <span
-            v-if="publication.reactions"
-            class="px-auto text-right text--disabled"
-            >{{ publication.reactions.length }} Like</span
-          >
+        <span class="px-auto text-right text--disabled">
+          {{ publication.reactions.length }} Likes
+        </span>
+        <v-spacer />
+        <v-btn
+          icon
+          color="info"
+          @click="showImage(publication, indexPublication)"
+        >
+          <v-icon>far fa-eye</v-icon>
         </v-btn>
       </v-card-actions>
     </v-card>
+    <modal-image
+      :enableModalImage="enableModalImage"
+      :dataImage="dataImage"
+      @changeActive="enableModalImage = $event"
+      @updateLike="updateLikeEventModal"
+    />
   </v-container>
 </template>
+
 <script>
 import moment from "moment";
 import { mapState } from "vuex";
 import axios from "axios";
+import modalImage from "@/components/modalShowImage";
 export default {
   name: "publication",
-
+  components: {
+    modalImage,
+  },
   props: {
     user: Object,
     loading: Boolean,
@@ -87,7 +101,9 @@ export default {
   },
   data() {
     return {
-      changeViewActive: "comments",
+      enableModalImage: false,
+      dataImage: {},
+      IndexPublication:0,
     };
   },
   methods: {
@@ -97,7 +113,7 @@ export default {
       });
       return find < 0 ? "blue" : "red";
     },
-    async updateLike(idPublication, indexUser, IndexPublication) {
+    async updateLike(idPublication, IndexPublication) {
       const updateLike = await axios.post(
         "/functs/likePublication",
         { idPublication: idPublication },
@@ -107,10 +123,22 @@ export default {
       if (updateLike.data.success) {
         this.$emit("updateLike", {
           islike: updateLike.data.isLike,
-          user: indexUser,
+          user: this.indexUser,
           publication: IndexPublication,
         });
       }
+    },
+    showImage(item, indexPublication) {
+      this.enableModalImage = true;
+      this.dataImage = item;
+      this.IndexPublication = indexPublication
+    },
+    updateLikeEventModal(event) {
+      this.$emit("updateLike", {
+        islike: event,
+        user: this.indexUser,
+        publication: this.IndexPublication,
+      });
     },
   },
   computed: {
