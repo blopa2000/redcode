@@ -6,7 +6,10 @@
           <v-img :src="avatar">
             <template v-slot:placeholder>
               <v-row class="fill-height ma-0" align="center" justify="center">
-                <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+                <v-progress-circular
+                  indeterminate
+                  color="grey lighten-5"
+                ></v-progress-circular>
               </v-row>
             </template>
           </v-img>
@@ -29,16 +32,36 @@
       <v-container>
         <v-row>
           <v-col cols="12" sm="4">
-            <v-text-field v-model="form.username" :rules="userNameRules" label="User name" required></v-text-field>
+            <v-text-field
+              v-model="form.username"
+              :rules="userNameRules"
+              label="User name"
+              required
+            ></v-text-field>
           </v-col>
           <v-col cols="12" sm="4">
-            <v-text-field v-model="form.firstName" :rules="nameRules" label="First name" required></v-text-field>
+            <v-text-field
+              v-model="form.firstName"
+              :rules="nameRules"
+              label="First name"
+              required
+            ></v-text-field>
           </v-col>
           <v-col cols="12" sm="4">
-            <v-text-field v-model="form.lastName" :rules="nameRules" label="Last name" required></v-text-field>
+            <v-text-field
+              v-model="form.lastName"
+              :rules="nameRules"
+              label="Last name"
+              required
+            ></v-text-field>
           </v-col>
           <v-col cols="12" sm="4">
-            <v-text-field v-model="form.email" :rules="emailRules" label="Email" required></v-text-field>
+            <v-text-field
+              v-model="form.email"
+              :rules="emailRules"
+              label="Email"
+              required
+            ></v-text-field>
           </v-col>
           <v-col cols="12" sm="4">
             <v-dialog
@@ -59,16 +82,33 @@
               </template>
               <v-date-picker v-model="form.dateBirth" scrollable>
                 <v-spacer></v-spacer>
-                <v-btn text color="primary" @click="modalDatePicker = false">Cancel</v-btn>
-                <v-btn text color="primary" @click="$refs.dialog.save(form.dateBirth)">OK</v-btn>
+                <v-btn text color="primary" @click="modalDatePicker = false"
+                  >Cancel</v-btn
+                >
+                <v-btn
+                  text
+                  color="primary"
+                  @click="$refs.dialog.save(form.dateBirth)"
+                  >OK</v-btn
+                >
               </v-date-picker>
             </v-dialog>
           </v-col>
           <v-col cols="12" sm="4">
-            <v-select v-model="form.sex" :items="optionSex" label="Sex" required></v-select>
+            <v-select
+              v-model="form.sex"
+              :items="optionSex"
+              label="Sex"
+              required
+            ></v-select>
           </v-col>
           <v-col cols="12">
-            <v-textarea v-model="form.description" solo name="input-7-4" label="Description"></v-textarea>
+            <v-textarea
+              v-model="form.description"
+              solo
+              name="input-7-4"
+              label="Description"
+            ></v-textarea>
           </v-col>
           <v-col cols="12" class="d-flex justify-end">
             <v-btn
@@ -76,7 +116,8 @@
               color="accent"
               elevation="0"
               @click="submitForm"
-            >Save information</v-btn>
+              >Save information</v-btn
+            >
           </v-col>
         </v-row>
       </v-container>

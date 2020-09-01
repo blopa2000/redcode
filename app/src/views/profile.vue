@@ -7,7 +7,10 @@
             <v-img :src="profile.avatar">
               <template v-slot:placeholder>
                 <v-row class="fill-height ma-0" align="center" justify="center">
-                  <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+                  <v-progress-circular
+                    indeterminate
+                    color="grey lighten-5"
+                  ></v-progress-circular>
                 </v-row>
               </template>
             </v-img>
@@ -16,7 +19,9 @@
 
         <div v-show="profile != ''">
           <p class="font-weight-black mb-0">{{ profile.username }}</p>
-          <strong class="mb-0">{{ profile.firstName }} {{ profile.lastName }}</strong>
+          <strong class="mb-0"
+            >{{ profile.firstName }} {{ profile.lastName }}</strong
+          >
           <p class="font-weight-thin mb-0">{{ profile.description }}</p>
         </div>
 
@@ -26,7 +31,9 @@
           </v-btn>
         </div>
         <div v-show="!activeEvent && dataUser != ''">
-          <v-btn color="red lighten-2 white--text" @click="UpdateFollow">{{ following[isFollow] }}</v-btn>
+          <v-btn color="red lighten-2 white--text" @click="UpdateFollow">{{
+            following[isFollow]
+          }}</v-btn>
         </div>
       </div>
 
@@ -36,7 +43,8 @@
           :elevation="0"
           color="red lighten-2"
           @click="activeModal = true"
-        >upload publication</v-btn>
+          >upload publication</v-btn
+        >
       </div>
 
       <!-- publication  -->
@@ -58,8 +66,15 @@
                   class="grey lighten-2"
                 >
                   <template v-slot:placeholder>
-                    <v-row class="fill-height ma-0" align="center" justify="center">
-                      <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+                    <v-row
+                      class="fill-height ma-0"
+                      align="center"
+                      justify="center"
+                    >
+                      <v-progress-circular
+                        indeterminate
+                        color="grey lighten-5"
+                      ></v-progress-circular>
                     </v-row>
                   </template>
                 </v-img>

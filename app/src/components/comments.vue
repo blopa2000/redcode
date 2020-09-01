@@ -2,7 +2,12 @@
   <div>
     <v-row justify="center">
       <v-col cols="11">
-        <v-text-field v-model="comment" :counter="45" label="comment" @keyup.enter="addComment"></v-text-field>
+        <v-text-field
+          v-model="comment"
+          :counter="45"
+          label="comment"
+          @keyup.enter="addComment"
+        ></v-text-field>
       </v-col>
     </v-row>
 
@@ -30,14 +35,10 @@
 
           <v-list-item-content>
             <v-list-item-title class="headline">
-              {{
-              item.dataComment.comment
-              }}
+              {{ item.dataComment.comment }}
             </v-list-item-title>
             <v-list-item-subtitle>
-              {{
-              item.dataComment.timestamp
-              }}
+              {{ item.dataComment.timestamp }}
             </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>

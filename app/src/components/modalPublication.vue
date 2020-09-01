@@ -2,7 +2,9 @@
   <div>
     <v-dialog v-model="show">
       <v-card>
-        <v-card-title class="headline grey lighten-2" primary-title>Upload publication</v-card-title>
+        <v-card-title class="headline grey lighten-2" primary-title
+          >Upload publication</v-card-title
+        >
 
         <v-card-text>
           <v-form
@@ -12,7 +14,11 @@
             enctype="multipart/form-data"
             @submit.prevent="uploadPublication"
           >
-            <v-file-input required @change="onFileSelected" label="Images"></v-file-input>
+            <v-file-input
+              required
+              @change="onFileSelected"
+              label="Images"
+            ></v-file-input>
             <v-text-field
               v-model="description"
               :rules="descriptionRules"
@@ -26,15 +32,18 @@
               :loading="loading"
               :disabled="loading || !valid"
               :elevation="0"
-            >save</v-btn>
+              >save</v-btn
+            >
           </v-form>
         </v-card-text>
 
-        <v-divider/>
+        <v-divider />
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="primary" text :disabled="loading" @click="show = false">Cancel</v-btn>
+          <v-btn color="primary" text :disabled="loading" @click="show = false"
+            >Cancel</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-dialog>

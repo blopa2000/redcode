@@ -18,7 +18,10 @@
       >
         <template v-slot:placeholder>
           <v-row class="fill-height ma-0" align="center" justify="center">
-            <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+            <v-progress-circular
+              indeterminate
+              color="grey lighten-5"
+            ></v-progress-circular>
           </v-row>
         </template>
       </v-img>
@@ -35,15 +38,14 @@
               text
               color="red lighten-2"
               :to="'/profile/' + user._id"
-            >{{ user.username }}</v-btn>
+              >{{ user.username }}</v-btn
+            >
           </v-list-item-title>
         </v-list-item-content>
 
         <v-list-item-content>
           <span class="px-auto text-right text--disabled">
-            {{
-            publication.timestamp | formatTimestamp
-            }}
+            {{ publication.timestamp | formatTimestamp }}
           </span>
         </v-list-item-content>
       </v-list-item>
@@ -58,9 +60,15 @@
         >
           <v-icon>fas fa-heart</v-icon>
         </v-btn>
-        <span class="px-auto text-right text--disabled">{{ publication.reactions.length }} Likes</span>
+        <span class="px-auto text-right text--disabled"
+          >{{ publication.reactions.length }} Likes</span
+        >
         <v-spacer />
-        <v-btn icon color="info" @click="showImage(publication, indexPublication)">
+        <v-btn
+          icon
+          color="info"
+          @click="showImage(publication, indexPublication)"
+        >
           <v-icon>far fa-eye</v-icon>
         </v-btn>
       </v-card-actions>

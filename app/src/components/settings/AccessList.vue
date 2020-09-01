@@ -10,8 +10,8 @@
             @click="actions('configurationProfile')"
           >
             <v-btn icon color="accent" class="mr-5">
-              <v-icon>far fa-user</v-icon>
-            </v-btn>Edit profile
+              <v-icon>far fa-user</v-icon> </v-btn
+            >Edit profile
           </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>

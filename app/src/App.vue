@@ -37,7 +37,7 @@ export default {
 };
 </script>
 
-<style >
+<style>
 .background {
   background-color: rgb(243, 243, 243) !important;
 }

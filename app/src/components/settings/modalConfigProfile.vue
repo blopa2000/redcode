@@ -1,6 +1,11 @@
 <template>
   <div>
-    <v-dialog v-model="show" fullscreen hide-overlay transition="dialog-bottom-transition">
+    <v-dialog
+      v-model="show"
+      fullscreen
+      hide-overlay
+      transition="dialog-bottom-transition"
+    >
       <v-card tile>
         <v-toolbar flat dark color="accent">
           <v-toolbar-title>Settings</v-toolbar-title>

@@ -72,27 +72,39 @@
                 </div>
                 <!-- /REGISTER -->
                 <div class="mb-5 d-flex justify-space-between">
-                  <a v-if="!enableRegister" @click="enableRegister = !enableRegister">register</a>
-                  <a v-if="enableRegister" @click="enableRegister = !enableRegister">login</a>
+                  <a
+                    v-if="!enableRegister"
+                    @click="enableRegister = !enableRegister"
+                    >register</a
+                  >
+                  <a
+                    v-if="enableRegister"
+                    @click="enableRegister = !enableRegister"
+                    >login</a
+                  >
                   <v-btn
                     v-if="!enableRegister"
                     type="submit"
                     small
                     :disabled="!valid"
                     color="primary"
-                  >login</v-btn>
+                    >login</v-btn
+                  >
                   <v-btn
                     v-if="enableRegister"
                     type="submit"
                     small
                     :disabled="!valid"
                     color="primary"
-                  >Register</v-btn>
+                    >Register</v-btn
+                  >
                 </div>
 
                 <div v-if="!success">
                   <div v-if="!enableRegister">
-                    <v-alert dense outlined :type="typeMessage">{{ dataMessage }}</v-alert>
+                    <v-alert dense outlined :type="typeMessage">{{
+                      dataMessage
+                    }}</v-alert>
                   </div>
 
                   <div v-if="enableRegister">
@@ -102,7 +114,8 @@
                       :type="typeMessage"
                       v-for="(item, index) of dataMessage"
                       :key="index"
-                    >{{ item.message }}</v-alert>
+                      >{{ item.message }}</v-alert
+                    >
                   </div>
                 </div>
               </v-form>

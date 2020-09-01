@@ -1,7 +1,7 @@
 <template>
   <v-card elevation="0">
     <v-row>
-      <v-col cols="2" v-for="(item,index) of people" :key="index">
+      <v-col cols="2" v-for="(item, index) of people" :key="index">
         <v-tooltip top>
           <template v-slot:activator="{ on, attrs }">
             <v-btn
@@ -18,7 +18,7 @@
               </v-avatar>
             </v-btn>
           </template>
-          <span>{{item.username}}</span>
+          <span>{{ item.username }}</span>
         </v-tooltip>
       </v-col>
     </v-row>

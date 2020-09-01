@@ -1,6 +1,12 @@
 <template>
   <div>
-    <v-app-bar v-if="activeNavbar != 'login' || dataUser != ''" fixed app dense :elevation="1.0">
+    <v-app-bar
+      v-if="activeNavbar != 'login' || dataUser != ''"
+      fixed
+      app
+      dense
+      :elevation="1.0"
+    >
       <h1>redcode</h1>
       <v-spacer />
       <input placeholder="sherch" />
@@ -12,7 +18,14 @@
 
       <v-menu transition="slide-y-transition" bottom>
         <template v-slot:activator="{ on, attrs }">
-          <v-btn class="ma-2" text icon color="red lighten-2" v-bind="attrs" v-on="on">
+          <v-btn
+            class="ma-2"
+            text
+            icon
+            color="red lighten-2"
+            v-bind="attrs"
+            v-on="on"
+          >
             <v-icon>fas fa-user-circle</v-icon>
           </v-btn>
         </template>
