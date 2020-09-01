@@ -74,9 +74,7 @@ router.post(
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res
-        .status(404)
-        .json({ success: false, status: 401, errors: errors.array() });
+      return res.json({ success: false, status: 404, errors: errors.array() });
     }
     const dataUser = req.body;
     dataUser.password = await bcrypt.encrypPassword(req.body.password);
@@ -85,18 +83,16 @@ router.post(
     try {
       newUser.save(async (err, room) => {
         if (err) {
-          return res
-            .status(500)
-            .json({ message: "error", error: err, success: false });
+          return res.json({ error: err, success: false });
         }
         const follow = new follows({
           idUser: room._id,
         });
         await follow.save();
-        res.status(200).json({ message: "user save", success: true });
+        res.json({ message: "user save", success: true });
       });
     } catch (error) {
-      return res.status(500).json({
+      return res.json({
         success: false,
         status: 500,
         errors: error.errors,
