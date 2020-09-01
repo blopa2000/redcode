@@ -1,11 +1,6 @@
 <template>
   <div>
-    <v-dialog
-      v-model="show"
-      fullscreen
-      hide-overlay
-      transition="dialog-bottom-transition"
-    >
+    <v-dialog v-model="show" fullscreen hide-overlay transition="dialog-bottom-transition">
       <v-card tile>
         <v-toolbar flat dark color="accent">
           <v-toolbar-title>Settings</v-toolbar-title>
@@ -38,14 +33,14 @@ import configurationProfile from "./configurationProfile";
 export default {
   components: {
     AccessList,
-    configurationProfile,
+    configurationProfile
   },
   props: {
-    activeModalConfig: Boolean,
+    activeModalConfig: Boolean
   },
   data() {
     return {
-      billboard: null,
+      billboard: null
     };
   },
   computed: {
@@ -55,8 +50,8 @@ export default {
       },
       set(value) {
         this.$emit("closeConfig", value);
-      },
-    },
+      }
+    }
   },
   methods: {
     back() {
@@ -68,7 +63,7 @@ export default {
     },
     updateProfile(event) {
       this.$emit("updateProfile", event);
-    },
-  },
+    }
+  }
 };
 </script>

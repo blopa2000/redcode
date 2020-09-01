@@ -2,12 +2,7 @@
   <div>
     <v-row justify="center">
       <v-col cols="11">
-        <v-text-field
-          v-model="comment"
-          :counter="45"
-          label="comment"
-          @keyup.enter="addComment"
-        ></v-text-field>
+        <v-text-field v-model="comment" :counter="45" label="comment" @keyup.enter="addComment"></v-text-field>
       </v-col>
     </v-row>
 
@@ -25,28 +20,30 @@
                 v-bind="attrs"
                 v-on="on"
               >
-                <v-list-item-avatar color="grey"
-                  ><img :src="item.avatar" alt="avatar"
-                /></v-list-item-avatar>
+                <v-list-item-avatar color="grey">
+                  <img :src="item.avatar" alt="avatar" />
+                </v-list-item-avatar>
               </v-btn>
             </template>
             <span>{{ item.username }}</span>
           </v-tooltip>
 
           <v-list-item-content>
-            <v-list-item-title class="headline">{{
+            <v-list-item-title class="headline">
+              {{
               item.dataComment.comment
-            }}</v-list-item-title>
-            <v-list-item-subtitle>{{
+              }}
+            </v-list-item-title>
+            <v-list-item-subtitle>
+              {{
               item.dataComment.timestamp
-            }}</v-list-item-subtitle>
+              }}
+            </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
       </v-card>
     </div>
-    <div v-if="comments == ''" class="text-center">
-      no comment
-    </div>
+    <div v-if="comments == ''" class="text-center">no comment</div>
   </div>
 </template>
 
@@ -57,16 +54,16 @@ import moment from "moment";
 export default {
   name: "comments",
   props: {
-    publicationId: String,
+    publicationId: String
   },
   data() {
     return {
       comments: [],
-      comment: "",
+      comment: ""
     };
   },
   computed: {
-    ...mapState(["token"]),
+    ...mapState(["token"])
   },
   async mounted() {
     this.getComments();
@@ -74,7 +71,7 @@ export default {
   watch: {
     publicationId() {
       this.getComments();
-    },
+    }
   },
   methods: {
     async addComment() {
@@ -111,8 +108,8 @@ export default {
     anotherProfile(id) {
       this.$router.push("/profile/" + id);
       this.$emit("changeShowModal", false);
-    },
-  },
+    }
+  }
 };
 </script>
 

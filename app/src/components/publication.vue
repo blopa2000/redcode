@@ -18,10 +18,7 @@
       >
         <template v-slot:placeholder>
           <v-row class="fill-height ma-0" align="center" justify="center">
-            <v-progress-circular
-              indeterminate
-              color="grey lighten-5"
-            ></v-progress-circular>
+            <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
           </v-row>
         </template>
       </v-img>
@@ -38,16 +35,16 @@
               text
               color="red lighten-2"
               :to="'/profile/' + user._id"
-            >
-              {{ user.username }}
-            </v-btn>
+            >{{ user.username }}</v-btn>
           </v-list-item-title>
         </v-list-item-content>
 
         <v-list-item-content>
-          <span class="px-auto text-right text--disabled">{{
+          <span class="px-auto text-right text--disabled">
+            {{
             publication.timestamp | formatTimestamp
-          }}</span>
+            }}
+          </span>
         </v-list-item-content>
       </v-list-item>
 
@@ -61,15 +58,9 @@
         >
           <v-icon>fas fa-heart</v-icon>
         </v-btn>
-        <span class="px-auto text-right text--disabled">
-          {{ publication.reactions.length }} Likes
-        </span>
+        <span class="px-auto text-right text--disabled">{{ publication.reactions.length }} Likes</span>
         <v-spacer />
-        <v-btn
-          icon
-          color="info"
-          @click="showImage(publication, indexPublication)"
-        >
+        <v-btn icon color="info" @click="showImage(publication, indexPublication)">
           <v-icon>far fa-eye</v-icon>
         </v-btn>
       </v-card-actions>
@@ -91,24 +82,24 @@ import modalImage from "@/components/modalShowImage";
 export default {
   name: "publication",
   components: {
-    modalImage,
+    modalImage
   },
   props: {
     user: Object,
     loading: Boolean,
     indexUser: Number,
-    item: Object,
+    item: Object
   },
   data() {
     return {
       enableModalImage: false,
       dataImage: {},
-      IndexPublication:0,
+      IndexPublication: 0
     };
   },
   methods: {
     isLike(reactions) {
-      const find = reactions.findIndex((element) => {
+      const find = reactions.findIndex(element => {
         return element == this.dataUser;
       });
       return find < 0 ? "blue" : "red";
@@ -124,32 +115,32 @@ export default {
         this.$emit("updateLike", {
           islike: updateLike.data.isLike,
           user: this.indexUser,
-          publication: IndexPublication,
+          publication: IndexPublication
         });
       }
     },
     showImage(item, indexPublication) {
       this.enableModalImage = true;
       this.dataImage = item;
-      this.IndexPublication = indexPublication
+      this.IndexPublication = indexPublication;
     },
     updateLikeEventModal(event) {
       this.$emit("updateLike", {
         islike: event,
         user: this.indexUser,
-        publication: this.IndexPublication,
+        publication: this.IndexPublication
       });
-    },
+    }
   },
   computed: {
-    ...mapState(["dataUser", "token"]),
+    ...mapState(["dataUser", "token"])
   },
   filters: {
     formatTimestamp(timestamp) {
       return moment(timestamp)
         .startOf("minutes")
         .fromNow();
-    },
-  },
+    }
+  }
 };
 </script>

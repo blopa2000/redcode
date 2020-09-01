@@ -1,10 +1,10 @@
 <template>
   <div>
     <v-row>
-      <v-col col="4"> </v-col>
-      <v-col col="4" >
+      <v-col col="4"></v-col>
+      <v-col col="4">
         <publication
-          v-for="(item, index) of publications" 
+          v-for="(item, index) of publications"
           :key="index"
           :user="item"
           :loading="loading"
@@ -12,7 +12,7 @@
           @updateLike="updateLike"
         />
       </v-col>
-      <v-col col="4"> </v-col>
+      <v-col col="4"></v-col>
     </v-row>
   </div>
 </template>
@@ -24,12 +24,12 @@ import axios from "axios";
 export default {
   name: "Home",
   components: {
-    publication,
+    publication
   },
   data() {
     return {
       publications: [],
-      loading: false,
+      loading: false
     };
   },
   created() {
@@ -40,7 +40,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(["dataUser", "token"]),
+    ...mapState(["dataUser", "token"])
   },
   methods: {
     async getPublicationsOfFollows() {
@@ -61,12 +61,12 @@ export default {
       } else {
         const id = this.publications[values.user].publications[
           values.publication
-        ].reactions.findIndex((id) => id == this.dataUser);
+        ].reactions.findIndex(id => id == this.dataUser);
         this.publications[values.user].publications[
           values.publication
         ].reactions.splice(id, 1);
       }
-    },
-  },
+    }
+  }
 };
 </script>

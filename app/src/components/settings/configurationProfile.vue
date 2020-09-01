@@ -6,10 +6,7 @@
           <v-img :src="avatar">
             <template v-slot:placeholder>
               <v-row class="fill-height ma-0" align="center" justify="center">
-                <v-progress-circular
-                  indeterminate
-                  color="grey lighten-5"
-                ></v-progress-circular>
+                <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
               </v-row>
             </template>
           </v-img>
@@ -32,36 +29,16 @@
       <v-container>
         <v-row>
           <v-col cols="12" sm="4">
-            <v-text-field
-              v-model="form.username"
-              :rules="userNameRules"
-              label="User name"
-              required
-            ></v-text-field>
+            <v-text-field v-model="form.username" :rules="userNameRules" label="User name" required></v-text-field>
           </v-col>
           <v-col cols="12" sm="4">
-            <v-text-field
-              v-model="form.firstName"
-              :rules="nameRules"
-              label="First name"
-              required
-            ></v-text-field>
+            <v-text-field v-model="form.firstName" :rules="nameRules" label="First name" required></v-text-field>
           </v-col>
           <v-col cols="12" sm="4">
-            <v-text-field
-              v-model="form.lastName"
-              :rules="nameRules"
-              label="Last name"
-              required
-            ></v-text-field>
+            <v-text-field v-model="form.lastName" :rules="nameRules" label="Last name" required></v-text-field>
           </v-col>
           <v-col cols="12" sm="4">
-            <v-text-field
-              v-model="form.email"
-              :rules="emailRules"
-              label="Email"
-              required
-            ></v-text-field>
+            <v-text-field v-model="form.email" :rules="emailRules" label="Email" required></v-text-field>
           </v-col>
           <v-col cols="12" sm="4">
             <v-dialog
@@ -82,33 +59,16 @@
               </template>
               <v-date-picker v-model="form.dateBirth" scrollable>
                 <v-spacer></v-spacer>
-                <v-btn text color="primary" @click="modalDatePicker = false"
-                  >Cancel</v-btn
-                >
-                <v-btn
-                  text
-                  color="primary"
-                  @click="$refs.dialog.save(form.dateBirth)"
-                  >OK</v-btn
-                >
+                <v-btn text color="primary" @click="modalDatePicker = false">Cancel</v-btn>
+                <v-btn text color="primary" @click="$refs.dialog.save(form.dateBirth)">OK</v-btn>
               </v-date-picker>
             </v-dialog>
           </v-col>
           <v-col cols="12" sm="4">
-            <v-select
-              v-model="form.sex"
-              :items="optionSex"
-              label="Sex"
-              required
-            ></v-select>
+            <v-select v-model="form.sex" :items="optionSex" label="Sex" required></v-select>
           </v-col>
           <v-col cols="12">
-            <v-textarea
-              v-model="form.description"
-              solo
-              name="input-7-4"
-              label="Description"
-            ></v-textarea>
+            <v-textarea v-model="form.description" solo name="input-7-4" label="Description"></v-textarea>
           </v-col>
           <v-col cols="12" class="d-flex justify-end">
             <v-btn
@@ -116,8 +76,7 @@
               color="accent"
               elevation="0"
               @click="submitForm"
-              >Save information</v-btn
-            >
+            >Save information</v-btn>
           </v-col>
         </v-row>
       </v-container>
@@ -136,12 +95,12 @@ export default {
       optionSex: [
         {
           value: "M",
-          text: "Male",
+          text: "Male"
         },
         {
           value: "F",
-          text: "Female",
-        },
+          text: "Female"
+        }
       ],
       form: {
         firstName: "",
@@ -150,22 +109,22 @@ export default {
         email: "",
         dateBirth: "",
         description: "",
-        sex: "",
+        sex: ""
       },
       avatar: "",
       auxFileAvatar: {}, //when working with the file-input the variable has to be of type Object since what it receives is properties of an object, otherwise it gets error props value
       userNameRules: [
         v => !!v || "user name is required",
-        v => v.length >= 6 || "user name must be less than 6 characters",
+        v => v.length >= 6 || "user name must be less than 6 characters"
       ],
       nameRules: [
         v => !!v || "Name is required",
-        v => v.length >= 4 || "Name must be less than 4 characters",
+        v => v.length >= 4 || "Name must be less than 4 characters"
       ],
       emailRules: [
         v => !!v || "E-mail is required",
-        v => /.+@.+/.test(v) || "E-mail must be valid",
-      ],
+        v => /.+@.+/.test(v) || "E-mail must be valid"
+      ]
     };
   },
   async mounted() {
@@ -181,14 +140,13 @@ export default {
     }
   },
   computed: {
-    ...mapState(["dataUser", "token"]),
+    ...mapState(["dataUser", "token"])
   },
   methods: {
     async submitForm() {
-
       if (this.$refs.form.validate()) {
         const response = await axios.post("/functs/updateUserInfo", this.form, {
-          headers: { Authorization: this.token },
+          headers: { Authorization: this.token }
         });
         if (response.data.success) {
           this.$emit("updateProfile", this.form);
@@ -199,18 +157,18 @@ export default {
       let data = new FormData();
       data.append("avatar", this.auxFileAvatar);
       const response = await axios.post("/functs/saveAvatar", data, {
-        headers: { Authorization: this.token },
+        headers: { Authorization: this.token }
       });
       if (response.data.success) {
         this.avatar = response.data.avatar;
         this.form.avatar = this.avatar;
         this.$emit("updateProfile", this.form);
       }
-    },
+    }
   },
   destroyed() {
     this.form = {};
-  },
+  }
 };
 </script>
 

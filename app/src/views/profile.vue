@@ -7,10 +7,7 @@
             <v-img :src="profile.avatar">
               <template v-slot:placeholder>
                 <v-row class="fill-height ma-0" align="center" justify="center">
-                  <v-progress-circular
-                    indeterminate
-                    color="grey lighten-5"
-                  ></v-progress-circular>
+                  <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
                 </v-row>
               </template>
             </v-img>
@@ -19,9 +16,7 @@
 
         <div v-show="profile != ''">
           <p class="font-weight-black mb-0">{{ profile.username }}</p>
-          <strong class="mb-0"
-            >{{ profile.firstName }} {{ profile.lastName }}
-          </strong>
+          <strong class="mb-0">{{ profile.firstName }} {{ profile.lastName }}</strong>
           <p class="font-weight-thin mb-0">{{ profile.description }}</p>
         </div>
 
@@ -31,9 +26,7 @@
           </v-btn>
         </div>
         <div v-show="!activeEvent && dataUser != ''">
-          <v-btn color="red lighten-2 white--text" @click="UpdateFollow">
-            {{ following[isFollow] }}
-          </v-btn>
+          <v-btn color="red lighten-2 white--text" @click="UpdateFollow">{{ following[isFollow] }}</v-btn>
         </div>
       </div>
 
@@ -43,9 +36,7 @@
           :elevation="0"
           color="red lighten-2"
           @click="activeModal = true"
-        >
-          upload publication
-        </v-btn>
+        >upload publication</v-btn>
       </div>
 
       <!-- publication  -->
@@ -67,15 +58,8 @@
                   class="grey lighten-2"
                 >
                   <template v-slot:placeholder>
-                    <v-row
-                      class="fill-height ma-0"
-                      align="center"
-                      justify="center"
-                    >
-                      <v-progress-circular
-                        indeterminate
-                        color="grey lighten-5"
-                      ></v-progress-circular>
+                    <v-row class="fill-height ma-0" align="center" justify="center">
+                      <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
                     </v-row>
                   </template>
                 </v-img>
@@ -84,16 +68,12 @@
           </v-col>
         </v-row>
       </div>
-      <div v-else>
-        {{ message }}
-      </div>
+      <div v-else>{{ message }}</div>
       <!-- /publication -->
     </v-container>
     <!-- componentes -->
     <v-container v-else>
-      <p class="error--text">
-        {{ message }}
-      </p>
+      <p class="error--text">{{ message }}</p>
     </v-container>
     <modalPublication
       :activeModal="activeModal"
@@ -126,7 +106,7 @@ export default {
   components: {
     modalPublication,
     modalConfigProfile,
-    ModalImage,
+    ModalImage
   },
   data() {
     return {
@@ -141,20 +121,20 @@ export default {
       IndexImage: 0,
       following: { true: "unfollow", false: "follow" },
       message: "",
-      profile: {},
+      profile: {}
     };
   },
   watch: {
     $route(to, from) {
       to, from;
       this.getProfile();
-    },
+    }
   },
   mounted() {
     this.getProfile();
   },
   computed: {
-    ...mapState(["dataUser", "token"]),
+    ...mapState(["dataUser", "token"])
   },
   methods: {
     async getProfile() {
@@ -204,7 +184,7 @@ export default {
     async getPublications() {
       this.dataUserpublication = "";
       const response = await axios.post("/functs/publications", {
-        id: this.$route.params.id,
+        id: this.$route.params.id
       });
 
       if (response.data.success) {
@@ -215,7 +195,6 @@ export default {
       }
     },
     async UpdateFollow() {
-      
       if (this.isFollow) {
         //stop following
         await axios.put(
@@ -231,7 +210,7 @@ export default {
           { headers: { Authorization: this.token } }
         );
       }
-      
+
       this.isFollow = !this.isFollow;
     },
     infoProfile() {
@@ -248,11 +227,11 @@ export default {
         this.dataUserpublication[id].reactions.push(this.dataUser);
       } else {
         const idUser = this.dataUserpublication[id].reactions.findIndex(
-          (id) => id == this.dataUser
+          id => id == this.dataUser
         );
         this.dataUserpublication[id].reactions.splice(idUser, 1);
       }
-    },
-  },
+    }
+  }
 };
 </script>

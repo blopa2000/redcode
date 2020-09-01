@@ -5,14 +5,14 @@
         <v-col col="12" md="6" lg="5" class="col-hidden">
           <v-card
             elevation="0"
-            class="text-center py-9 "
+            class="text-center py-9"
             style="background-color: rgb(243, 243, 243)"
           >
-            <img class="svg_chat_style" :src="svgChat" alt="" />
+            <img class="svg_chat_style" :src="svgChat" alt />
           </v-card>
         </v-col>
         <v-col col="12" md="6" lg="5">
-          <v-card outlined class="text-center ">
+          <v-card outlined class="text-center">
             <v-container>
               <div class="mb-5 text-center">
                 <h1>redcode</h1>
@@ -71,40 +71,28 @@
                   ></v-text-field>
                 </div>
                 <!-- /REGISTER -->
-                <div class=" mb-5 d-flex justify-space-between">
-                  <a
-                    v-if="!enableRegister"
-                    @click="enableRegister = !enableRegister"
-                    >register</a
-                  >
-                  <a
-                    v-if="enableRegister"
-                    @click="enableRegister = !enableRegister"
-                    >login</a
-                  >
+                <div class="mb-5 d-flex justify-space-between">
+                  <a v-if="!enableRegister" @click="enableRegister = !enableRegister">register</a>
+                  <a v-if="enableRegister" @click="enableRegister = !enableRegister">login</a>
                   <v-btn
                     v-if="!enableRegister"
                     type="submit"
                     small
                     :disabled="!valid"
                     color="primary"
-                    >login</v-btn
-                  >
+                  >login</v-btn>
                   <v-btn
                     v-if="enableRegister"
                     type="submit"
                     small
                     :disabled="!valid"
                     color="primary"
-                    >Register</v-btn
-                  >
+                  >Register</v-btn>
                 </div>
 
                 <div v-if="!success">
                   <div v-if="!enableRegister">
-                    <v-alert dense outlined :type="typeMessage">
-                      {{ dataMessage }}
-                    </v-alert>
+                    <v-alert dense outlined :type="typeMessage">{{ dataMessage }}</v-alert>
                   </div>
 
                   <div v-if="enableRegister">
@@ -114,9 +102,7 @@
                       :type="typeMessage"
                       v-for="(item, index) of dataMessage"
                       :key="index"
-                    >
-                      {{ item.message }}
-                    </v-alert>
+                    >{{ item.message }}</v-alert>
                   </div>
                 </div>
               </v-form>
@@ -150,25 +136,25 @@ export default {
       email: "",
       nameRules: [
         v => !!v || "Name is required",
-        v => v.length >= 4 || "Name is invalid",
+        v => v.length >= 4 || "Name is invalid"
       ],
       passwordRules: [
         v => !!v || "Password is required",
-        v => v.length >= 4 || "password is invalid",
+        v => v.length >= 4 || "password is invalid"
       ],
       firstNameRules: [
         v => !!v || "First name is required",
-        v => v.length >= 4 || "First name is invalid",
+        v => v.length >= 4 || "First name is invalid"
       ],
       lastNameRules: [
         v => !!v || "Last name is required",
-        v => v.length >= 4 || "Last name is invalid",
+        v => v.length >= 4 || "Last name is invalid"
       ],
       emailRules: [
         v => !!v || "E-mail is required",
-        v => /.+@.+/.test(v) || "E-mail must be valid",
+        v => /.+@.+/.test(v) || "E-mail must be valid"
       ],
-      svgChat: chat,
+      svgChat: chat
     };
   },
   async created() {
@@ -180,7 +166,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(["dataUser"]),
+    ...mapState(["dataUser"])
   },
   methods: {
     ...mapMutations(["setDataUser", "setToken"]),
@@ -193,7 +179,7 @@ export default {
               password: this.password,
               firstName: this.firstName,
               lastName: this.lastName,
-              email: this.email,
+              email: this.email
             });
 
             if (response.data.success) {
@@ -222,7 +208,7 @@ export default {
         if (this.$refs.formInside.validate()) {
           const db = await axios.post("/functs/inside", {
             username: this.username,
-            password: this.password,
+            password: this.password
           });
           if (db.data.success) {
             const value = await jwt_decode(db.data.token);
@@ -242,8 +228,8 @@ export default {
           }
         }
       }
-    },
-  },
+    }
+  }
 };
 </script>
 
