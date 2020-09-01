@@ -2,8 +2,10 @@
   <div>
     <v-row>
       <v-col col="4"> </v-col>
-      <v-col col="4" v-for="(item, index) of publications" :key="index">
+      <v-col col="4" >
         <publication
+          v-for="(item, index) of publications" 
+          :key="index"
           :user="item"
           :loading="loading"
           :indexUser="index"
