@@ -5,14 +5,14 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    dataUser: "",
+    idUser: "",
     token: "",
     activeNavbar: "",
     loading: false
   },
   mutations: {
-    setDataUser(state, peyload) {
-      state.dataUser = peyload;
+    setIdUser(state, peyload) {
+      state.idUser = peyload;
     },
     setToken(state, peyload) {
       state.token = peyload;

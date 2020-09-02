@@ -10,10 +10,10 @@ let comment_schema = new Schema({
     type: Date,
     default: Date.now,
   },
-  publicationId: {
+  postId: {
     type: Schema.Types.ObjectId,
-    ref: "publications",
-    required: [true, "publicationId is required"],
+    ref: "posts",
+    required: [true, "post id is required"],
   },
   comment: {
     type: String,

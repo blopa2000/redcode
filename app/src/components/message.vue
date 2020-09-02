@@ -16,9 +16,9 @@ export default {
     }
   },
   computed: {
-    validate(){
-      return this.message.text
+    validate() {
+      return this.message.text;
     }
-  },
+  }
 };
 </script>

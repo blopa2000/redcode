@@ -22,19 +22,21 @@
           <strong class="mb-0"
             >{{ profile.firstName }} {{ profile.lastName }}</strong
           >
-          <p class="font-weight-thin mb-0">{{ profile.description }}</p>
+          <p class="font-weight-thin mb-0" style="max-width: 421px;">
+            {{ profile.description }}
+          </p>
         </div>
 
         <div v-show="activeEvent">
-          <v-btn text icon color="red lighten-2" @click="infoProfile">
+          <v-btn text icon color="red lighten-2 ml-5" @click="infoProfile">
             <v-icon>fas fa-toolbox</v-icon>
           </v-btn>
         </div>
-        <div v-show="!activeEvent && dataUser != ''">
-          <v-btn color="red lighten-2 white--text" @click="UpdateFollow">{{
-            following[isFollow]
-          }}</v-btn>
-        </div>
+      </div>
+      <div v-show="!activeEvent && idUser != ''">
+        <v-btn color="red lighten-2 white--text" @click="UpdateFollow">{{
+          following[isFollow]
+        }}</v-btn>
       </div>
 
       <div v-if="activeEvent">
@@ -43,15 +45,15 @@
           :elevation="0"
           color="red lighten-2"
           @click="activeModal = true"
-          >upload publication</v-btn
+          >upload post</v-btn
         >
       </div>
 
-      <!-- publication  -->
-      <div v-if="dataUserpublication != ''">
+      <!-- post  -->
+      <div v-if="userPosts != ''">
         <v-row>
           <v-col
-            v-for="(item, index) of dataUserpublication"
+            v-for="(item, index) of userPosts"
             :key="index"
             class="d-flex child-flex"
             cols="12"
@@ -83,30 +85,30 @@
           </v-col>
         </v-row>
       </div>
-      <!-- /publication -->
+      <!-- /post -->
     </v-container>
     <v-container>
       <message
-        v-if="dataUserpublication == '' || !exists"
+        v-if="userPosts == '' || !exists"
         class="mt-5"
         :message="message"
       />
     </v-container>
     <!-- componentes -->
-    <modalPublication
+    <modal-upload-post
       :activeModal="activeModal"
       @close="activeModal = false"
-      @saveImages="getPublications"
+      @savepost="getPosts"
     />
-    <modalConfigProfile
+    <modal-config-profile
       :activeModalConfig="activeModalConfig"
       @closeConfig="activeModalConfig = false"
       @updateProfile="profile = $event"
     />
-    <ModalImage
-      :enableModalImage="enableModalImage"
-      :dataImage="dataImage"
-      @changeActive="enableModalImage = $event"
+    <modal-show-post
+      :enableModalPost="enableModalPost"
+      :post="dataImage"
+      @changeActive="enableModalPost = $event"
       @updateLike="updateLike"
     />
     <!-- /components -->
@@ -114,8 +116,8 @@
 </template>
 
 <script>
-import modalPublication from "@/components/modalPublication";
-import ModalImage from "@/components/modalShowImage";
+import modalUploadPost from "@/components/modalUploadPost";
+import modalShowPost from "@/components/modalShowPost";
 import modalConfigProfile from "@/components/settings/modalConfigProfile";
 import message from "@/components/message";
 import axios from "axios";
@@ -123,9 +125,9 @@ import { mapState, mapMutations } from "vuex";
 
 export default {
   components: {
-    modalPublication,
+    modalUploadPost,
     modalConfigProfile,
-    ModalImage,
+    modalShowPost,
     message
   },
   data() {
@@ -134,9 +136,9 @@ export default {
       exists: false,
       activeModal: false,
       activeModalConfig: false,
-      enableModalImage: false,
+      enableModalPost: false,
       dataImage: {},
-      dataUserpublication: [],
+      userPosts: [],
       isFollow: false,
       IndexImage: 0,
       following: { true: "unfollow", false: "follow" },
@@ -156,7 +158,7 @@ export default {
     this.setLoading(false);
   },
   computed: {
-    ...mapState(["dataUser", "token"])
+    ...mapState(["idUser", "token"])
   },
   methods: {
     ...mapMutations(["setLoading"]),
@@ -164,63 +166,57 @@ export default {
       const response = await axios.post(
         `/functs/getProfile/${this.$route.params.id}`
       );
-      if (this.dataUser == "" || this.dataUser !== this.$route.params.id) {
+      if (this.idUser !== this.$route.params.id) {
         //another profile
-
         this.activeEvent = false;
-        if (response.data.success) {
-          this.exists = true;
-          this.profile = response.data.profile;
 
-          if (this.token) {
-            const getFollow = await axios.post(
-              "/functs/isFollowing",
-              { idFollow: this.$route.params.id },
-              { headers: { Authorization: this.token } }
-            );
-            if (getFollow.data.success) {
-              this.isFollow = true;
-            } else {
-              this.isFollow = false;
-            }
+        if (this.token) {
+          const getFollow = await axios.post(
+            "/functs/isFollowing",
+            { idFollow: this.$route.params.id },
+            { headers: { Authorization: this.token } }
+          );
+          if (getFollow.data.success) {
+            this.isFollow = true;
+          } else {
+            this.isFollow = false;
           }
-        } else {
-          this.message = {
-            text: `${response.data.message}.....
-            this may be an internal error or the user cannot be found
-            `,
-            color: "error"
-          };
-          this.exists = false;
         }
       } else {
         //my profile
-        this.exists = true;
         this.activeEvent = true;
-
-        if (response.data.success) {
-          this.profile = response.data.profile;
-        } else {
-          this.message = response.data.message;
-        }
       }
-      if (this.exists) this.getPublications();
+
+      if (response.data.success) {
+        this.exists = true;
+        this.profile = response.data.profile;
+        //get posts
+        this.getPosts();
+      } else {
+        this.message = {
+          text: `${response.data.message}...
+          this may be an internal error or the user cannot be found
+          `,
+          color: "error"
+        };
+        this.exists = false;
+      }
     },
-    async getPublications() {
-      this.dataUserpublication = "";
-      const response = await axios.post("/functs/publications", {
+    async getPosts() {
+      this.userPosts = "";
+      const response = await axios.post("/functs/posts", {
         id: this.$route.params.id
       });
       if (response.data.success) {
-        this.dataUserpublication = response.data.publications;
-        if (this.dataUserpublication.length <= 0) {
+        this.userPosts = response.data.posts;
+        if (this.userPosts.length <= 0) {
           this.message = {
             text: "Has no posts... upload one",
             color: "info"
           };
         }
       } else {
-        this.dataUserpublication = [];
+        this.userPosts = [];
         this.message = {
           text: response.data.message,
           color: "info"
@@ -250,19 +246,19 @@ export default {
       this.activeModalConfig = true;
     },
     showImage(item, index) {
-      this.enableModalImage = true;
+      this.enableModalPost = true;
       this.dataImage = item;
       this.IndexImage = index;
     },
     updateLike(event) {
       const id = this.IndexImage;
       if (event) {
-        this.dataUserpublication[id].reactions.push(this.dataUser);
+        this.userPosts[id].reactions.push(this.idUser);
       } else {
-        const idUser = this.dataUserpublication[id].reactions.findIndex(
-          id => id == this.dataUser
+        const idUser = this.userPosts[id].reactions.findIndex(
+          id => id == this.idUser
         );
-        this.dataUserpublication[id].reactions.splice(idUser, 1);
+        this.userPosts[id].reactions.splice(idUser, 1);
       }
     }
   }

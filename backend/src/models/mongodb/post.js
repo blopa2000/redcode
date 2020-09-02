@@ -1,6 +1,6 @@
 const { Schema, model } = require("mongoose");
 
-let publication_schema = new Schema({
+let post_schema = new Schema({
   idUser:{type:String,required:[true,"id user is required"]},
   images: { type: String, required: [true, "id user is required"] },
   description: { type: String },
@@ -19,5 +19,5 @@ let publication_schema = new Schema({
   ],
 });
 
-const publicacion = model("publications", publication_schema);
-module.exports = publicacion;
+const post = model("posts", post_schema);
+module.exports = post;

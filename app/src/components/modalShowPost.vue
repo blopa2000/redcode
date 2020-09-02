@@ -2,13 +2,13 @@
   <v-dialog v-model="show" max-width="1050">
     <v-card class="d-flex" height="100%" style="overflow: hidden;">
       <v-row>
-        <v-col cols="6" class="py-0">
+        <v-col cols="12" sm="6" class="py-0">
           <v-img
             height="490"
             width="500"
             position="center center"
-            :src="dataImage.images"
-            :lazy-src="dataImage.image"
+            :src="post.images"
+            :lazy-src="post.image"
             aspect-ratio="1"
           >
             <template v-slot:placeholder>
@@ -21,28 +21,28 @@
             </template>
           </v-img>
         </v-col>
-        <v-col cols="6">
+        <v-col cols="12" sm="6">
           <v-card elevation="0">
             <v-card-text>
-              <p class="headline">{{ dataImage.description }}</p>
+              <p class="headline">{{ post.description }}</p>
               <span class="px-auto text-right text--disabled">
-                {{ dataImage.timestamp | formatTimestamp }}
+                {{ post.timestamp | formatTimestamp }}
               </span>
             </v-card-text>
             <v-card-actions>
               <div class="d-flex">
                 <v-btn
                   icon
-                  @click="updateLike(dataImage._id)"
-                  :color="isLike(dataImage.reactions)"
+                  @click="updateLike(post._id)"
+                  :color="isLike(post.reactions)"
                 >
                   <v-icon>fas fa-heart</v-icon>
                 </v-btn>
                 <v-btn text class="btn-person" @click="changeView('likes')">
                   <span
-                    v-if="dataImage.reactions"
+                    v-if="post.reactions"
                     class="px-auto text-right text--disabled"
-                    >{{ dataImage.reactions.length }} Like</span
+                    >{{ post.reactions.length }} Like</span
                   >
                 </v-btn>
                 <v-btn text class="btn-person" @click="changeView('comments')">
@@ -53,14 +53,14 @@
               </div>
             </v-card-actions>
           </v-card>
-          <likesPublication
+          <likes-post
             v-show="changeViewActive == 'likes'"
-            :reactions="dataImage.reactions"
+            :reactions="post.reactions"
             @changeShowModal="show = $event"
           />
           <comments
             v-show="changeViewActive == 'comments'"
-            :publicationId="dataImage._id"
+            :postId="post._id"
             @changeShowModal="show = $event"
           />
         </v-col>
@@ -70,20 +70,20 @@
 </template>
 
 <script>
-import likesPublication from "@/components/likesPublication";
+import likesPost from "@/components/likesPost";
 import comments from "@/components/comments";
 import { mapState } from "vuex";
 import axios from "axios";
 import moment from "moment";
 export default {
-  name: "modalShowImages",
+  name: "modalShowpost",
   components: {
-    likesPublication,
+    likesPost,
     comments
   },
   props: {
-    enableModalImage: Boolean,
-    dataImage: Object
+    enableModalPost: Boolean,
+    post: Object
   },
   data() {
     return {
@@ -91,10 +91,10 @@ export default {
     };
   },
   computed: {
-    ...mapState(["dataUser", "token"]),
+    ...mapState(["idUser", "token"]),
     show: {
       get() {
-        return this.enableModalImage;
+        return this.enableModalPost;
       },
       set(value) {
         this.changeViewActive = "comments";
@@ -106,8 +106,8 @@ export default {
     async updateLike(id) {
       try {
         const updateLike = await axios.post(
-          "/functs/likePublication",
-          { idPublication: id },
+          "/functs/likePost",
+          { idPost: id },
           { headers: { Authorization: this.token } }
         );
         if (updateLike.data.success) {
@@ -126,7 +126,7 @@ export default {
     isLike(reactions) {
       if (reactions === undefined) return "blue";
       const find = reactions.findIndex(element => {
-        return element == this.dataUser;
+        return element == this.idUser;
       });
       return find < 0 ? "blue" : "red";
     },

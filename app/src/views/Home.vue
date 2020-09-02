@@ -3,9 +3,9 @@
     <v-row>
       <v-col col="4"></v-col>
       <v-col col="4">
-        <div v-if="publications.length > 0">
-          <publication
-            v-for="(item, index) of publications"
+        <div v-if="posts.length > 0">
+          <posts
+            v-for="(item, index) of posts"
             :key="index"
             :user="item"
             :loading="loading"
@@ -22,46 +22,45 @@
 
 <script>
 import { mapState } from "vuex";
-import publication from "@/components/publication";
+import posts from "@/components/posts";
 import message from "@/components/message";
 import axios from "axios";
 export default {
   name: "Home",
   components: {
-    publication,
+    posts,
     message
   },
   data() {
     return {
-      publications: [],
+      posts: [],
       loading: false,
       messages: {}
     };
   },
   created() {
-    if (!this.dataUser) {
+    if (!this.idUser) {
       this.$router.push("/login");
     } else {
-      this.getPublicationsOfFollows();
+      this.getPostsOfFollows();
     }
   },
   computed: {
-    ...mapState(["dataUser", "token"])
+    ...mapState(["idUser", "token"])
   },
   methods: {
-    async getPublicationsOfFollows() {
+    async getPostsOfFollows() {
       this.loading = true;
       const response = await axios.post(
-        "/functs/publicationsOfFollow",
+        "/functs/postsOfFollow",
         {},
         { headers: { Authorization: this.token } }
       );
       if (response.data.success) {
-        this.publications = response.data.values;
-        if (this.publications.length <= 0) {
+        this.posts = response.data.posts;
+        if (this.posts.length <= 0) {
           this.messages = {
-            text:
-              "Does not follow anyone yet, search to view their publications",
+            text: "Not following anyone yet, search to see their posts",
             color: "indigo"
           };
         } else {
@@ -75,16 +74,12 @@ export default {
     },
     updateLike(values) {
       if (values.islike) {
-        this.publications[values.user].publications[
-          values.publication
-        ].reactions.push(this.dataUser);
+        this.posts[values.user].posts[values.post].reactions.push(this.idUser);
       } else {
-        const id = this.publications[values.user].publications[
-          values.publication
-        ].reactions.findIndex(id => id == this.dataUser);
-        this.publications[values.user].publications[
-          values.publication
-        ].reactions.splice(id, 1);
+        const id = this.posts[values.user].posts[
+          values.post
+        ].reactions.findIndex(id => id == this.idUser);
+        this.posts[values.user].posts[values.post].reactions.splice(id, 1);
       }
     }
   }

@@ -58,10 +58,10 @@ let user_schema = new Schema({
     type: String,
     enum: { values: possible_values, massage: "option is not valid" },
   },
-  publications: [
+  posts: [
     {
       type: Schema.Types.ObjectId,
-      ref:"publications"
+      ref:"posts"
     },
   ],
 });

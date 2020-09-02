@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-app-bar
-      v-if="activeNavbar != 'login' || dataUser != ''"
+      v-if="activeNavbar != 'login' && idUser != ''"
       fixed
       app
       dense
@@ -12,14 +12,14 @@
       <input placeholder="sherch" />
       <v-spacer />
 
-      <v-btn class="ma-2" text icon color="red lighten-2" to="/home">
+      <v-btn class="m-2" text icon color="red lighten-2" to="/">
         <v-icon>fas fa-door-open</v-icon>
       </v-btn>
 
       <v-menu transition="slide-y-transition" bottom>
         <template v-slot:activator="{ on, attrs }">
           <v-btn
-            class="ma-2"
+            class="m-2"
             text
             icon
             color="red lighten-2"
@@ -30,7 +30,7 @@
           </v-btn>
         </template>
         <v-list>
-          <v-list-item :to="'/profile/' + dataUser">
+          <v-list-item :to="'/profile/' + idUser">
             <v-list-item-title>Profile</v-list-item-title>
           </v-list-item>
           <v-list-item @click="exit()">
@@ -47,13 +47,13 @@ import { mapState, mapMutations } from "vuex";
 export default {
   name: "navbar",
   computed: {
-    ...mapState(["dataUser", "activeNavbar"])
+    ...mapState(["idUser", "activeNavbar"])
   },
   methods: {
-    ...mapMutations(["setDataUser"]),
+    ...mapMutations(["setIdUser"]),
     exit() {
       localStorage.removeItem("session");
-      this.setDataUser("");
+      this.setIdUser("");
       this.$router.push("/login");
     }
   }

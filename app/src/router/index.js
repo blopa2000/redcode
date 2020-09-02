@@ -1,7 +1,5 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-// import store from '@/store'
-// import jwt_decode from "jwt-decode"
 Vue.use(VueRouter);
 
 const routes = [
@@ -39,9 +37,6 @@ router.beforeEach(async (to, from, next) => {
   if (user == null && to.matched.some(record => record.meta.requiresAuth)) {
     next({ name: "login" }); // make sure to always call next()!
   } else {
-    // const value = await jwt_decode(user);
-    // store.state.dataUser = value.data
-    // store.state.token = user
     next();
   }
 });

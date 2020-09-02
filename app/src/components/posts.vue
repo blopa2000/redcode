@@ -6,14 +6,14 @@
       max-width="500"
       loader-height="2"
       :loading="loading"
-      v-for="(publication, indexPublication) of user.publications"
-      :key="indexPublication"
+      v-for="(post, indexPost) of user.posts"
+      :key="indexPost"
     >
       <v-img
         class="align-end grey lighten-2"
         width="100%"
-        :src="publication.images"
-        :lazy-src="publication.images"
+        :src="post.images"
+        :lazy-src="post.images"
         aspect-ratio="1"
       >
         <template v-slot:placeholder>
@@ -45,38 +45,34 @@
 
         <v-list-item-content>
           <span class="px-auto text-right text--disabled">
-            {{ publication.timestamp | formatTimestamp }}
+            {{ post.timestamp | formatTimestamp }}
           </span>
         </v-list-item-content>
       </v-list-item>
 
-      <v-card-title class="pb-0">{{ publication.description }}</v-card-title>
+      <v-card-title class="pb-0">{{ post.description }}</v-card-title>
 
       <v-card-actions>
         <v-btn
           icon
-          @click="updateLike(publication._id, indexPublication)"
-          :color="isLike(publication.reactions)"
+          @click="updateLike(post._id, indexPost)"
+          :color="isLike(post.reactions)"
         >
           <v-icon>fas fa-heart</v-icon>
         </v-btn>
         <span class="px-auto text-right text--disabled"
-          >{{ publication.reactions.length }} Likes</span
+          >{{ post.reactions.length }} Likes</span
         >
         <v-spacer />
-        <v-btn
-          icon
-          color="info"
-          @click="showImage(publication, indexPublication)"
-        >
+        <v-btn icon color="info" @click="showImage(post, indexPost)">
           <v-icon>far fa-eye</v-icon>
         </v-btn>
       </v-card-actions>
     </v-card>
-    <modal-image
-      :enableModalImage="enableModalImage"
-      :dataImage="dataImage"
-      @changeActive="enableModalImage = $event"
+    <modal-show-post
+      :enableModalPost="enableModalPost"
+      :post="dataImage"
+      @changeActive="enableModalPost = $event"
       @updateLike="updateLikeEventModal"
     />
   </v-container>
@@ -86,11 +82,11 @@
 import moment from "moment";
 import { mapState } from "vuex";
 import axios from "axios";
-import modalImage from "@/components/modalShowImage";
+import modalShowPost from "@/components/modalShowPost";
 export default {
-  name: "publication",
+  name: "post",
   components: {
-    modalImage
+    modalShowPost
   },
   props: {
     user: Object,
@@ -100,22 +96,22 @@ export default {
   },
   data() {
     return {
-      enableModalImage: false,
+      enableModalPost: false,
       dataImage: {},
-      IndexPublication: 0
+      indexPost: 0
     };
   },
   methods: {
     isLike(reactions) {
       const find = reactions.findIndex(element => {
-        return element == this.dataUser;
+        return element == this.idUser;
       });
       return find < 0 ? "blue" : "red";
     },
-    async updateLike(idPublication, IndexPublication) {
+    async updateLike(idPost, indexPost) {
       const updateLike = await axios.post(
-        "/functs/likePublication",
-        { idPublication: idPublication },
+        "/functs/likePost",
+        { idPost: idPost },
         { headers: { Authorization: this.token } }
       );
 
@@ -123,25 +119,25 @@ export default {
         this.$emit("updateLike", {
           islike: updateLike.data.isLike,
           user: this.indexUser,
-          publication: IndexPublication
+          post: indexPost
         });
       }
     },
-    showImage(item, indexPublication) {
-      this.enableModalImage = true;
+    showImage(item, indexPost) {
+      this.enableModalPost = true;
       this.dataImage = item;
-      this.IndexPublication = indexPublication;
+      this.indexPost = indexPost;
     },
     updateLikeEventModal(event) {
       this.$emit("updateLike", {
         islike: event,
         user: this.indexUser,
-        publication: this.IndexPublication
+        post: this.indexPost
       });
     }
   },
   computed: {
-    ...mapState(["dataUser", "token"])
+    ...mapState(["idUser", "token"])
   },
   filters: {
     formatTimestamp(timestamp) {

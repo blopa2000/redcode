@@ -1,8 +1,18 @@
 <template>
   <div>
-    <v-row justify="center">
-      <v-col cols="11">
-        <v-text-field v-model="comment" :counter="45" label="comment" @keyup.enter="addComment"></v-text-field>
+    <v-row justify="center" align="center">
+      <v-col cols="9" sm="8" md="10" class="pl-5">
+        <v-text-field
+          v-model="comment"
+          :counter="45"
+          label="comment"
+          @keyup.enter="addComment"
+        ></v-text-field>
+      </v-col>
+      <v-col cols="3" sm="4" md="2">
+        <v-btn elevation="3" fab color="primary" @click="addComment">
+          <v-icon>far fa-comment</v-icon>
+        </v-btn>
       </v-col>
     </v-row>
 
@@ -29,8 +39,12 @@
           </v-tooltip>
 
           <v-list-item-content>
-            <v-list-item-title class="headline">{{ item.dataComment.comment }}</v-list-item-title>
-            <v-list-item-subtitle>{{ item.dataComment.timestamp }}</v-list-item-subtitle>
+            <v-list-item-title class="headline">{{
+              item.dataComment.comment
+            }}</v-list-item-title>
+            <v-list-item-subtitle>{{
+              item.dataComment.timestamp | formatTimestamp
+            }}</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
       </v-card>
@@ -52,7 +66,7 @@ export default {
     message
   },
   props: {
-    publicationId: String
+    postId: String
   },
   data() {
     return {
@@ -71,7 +85,7 @@ export default {
     this.getComments();
   },
   watch: {
-    publicationId() {
+    postId() {
       this.getComments();
     }
   },
@@ -80,7 +94,7 @@ export default {
       if (this.comment.length <= 45) {
         const newComment = await axios.post(
           "/functs/comment",
-          { commentData: this.comment, publicationId: this.publicationId },
+          { commentData: this.comment, postId: this.postId },
           { headers: { Authorization: this.token } }
         );
         if (newComment.data.success) {
@@ -92,24 +106,23 @@ export default {
     async getComments() {
       const response = await axios.post(
         "/functs/getComments",
-        { publicationId: this.publicationId },
+        { postId: this.postId },
         { headers: { Authorization: this.token } }
       );
       if (response.data.success) {
-        let comments = response.data.comments;
-        for (let i in comments) {
-          comments[i].dataComment.timestamp = moment(
-            comments[i].dataComment.timestamp
-          )
-            .startOf("minute")
-            .fromNow();
-        }
-        this.comments = comments;
+        this.comments = response.data.comments;
       }
     },
     anotherProfile(id) {
       this.$router.push("/profile/" + id);
       this.$emit("changeShowModal", false);
+    }
+  },
+  filters: {
+    formatTimestamp(timestamp) {
+      return moment(timestamp)
+        .startOf("minutes")
+        .fromNow();
     }
   }
 };

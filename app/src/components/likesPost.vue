@@ -30,11 +30,11 @@
 
 <script>
 import axios from "axios";
-import message from "@/components/message"
+import message from "@/components/message";
 export default {
-  name: "likesPublication",
-  components:{
-    message,
+  name: "likesPost",
+  components: {
+    message
   },
   props: {
     reactions: Array
@@ -42,9 +42,9 @@ export default {
   data() {
     return {
       people: [],
-      message:{
-        text:"this post has no likes",
-        color:"info"
+      message: {
+        text: "this post has no likes",
+        color: "info"
       }
     };
   },
@@ -65,7 +65,7 @@ export default {
       }
     },
     anotherProfile(id) {
-      this.$router.push("/profile/" + id);
+      this.$router.push(`/profile/${id}`);
       this.$emit("changeShowModal", false);
     }
   }

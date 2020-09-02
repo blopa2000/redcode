@@ -169,7 +169,7 @@ export default {
     };
   },
   async mounted() {
-    const response = await axios.post(`/functs/getProfile/${this.dataUser}`);
+    const response = await axios.post(`/functs/getProfile/${this.idUser}`);
     if (response.data.success) {
       if (response.data.profile.dateBirth != undefined) {
         const date = response.data.profile.dateBirth.split("T");
@@ -181,7 +181,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(["dataUser", "token"])
+    ...mapState(["idUser", "token"])
   },
   methods: {
     ...mapMutations(["setLoading"]),

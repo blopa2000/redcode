@@ -1,5 +1,5 @@
 <template>
-  <div class="login" v-if="!dataUser">
+  <div class="login" v-if="!idUser">
     <v-container>
       <v-row justify="center">
         <v-col col="12" md="6" lg="5" class="col-hidden">
@@ -174,15 +174,15 @@ export default {
     const session = localStorage.getItem("session");
     if (session) {
       const value = await jwt_decode(session);
-      this.setDataUser(value.id);
+      this.setIdUser(value.id);
       this.$router.push("/");
     }
   },
   computed: {
-    ...mapState(["dataUser"])
+    ...mapState(["idUser"])
   },
   methods: {
-    ...mapMutations(["setDataUser", "setToken"]),
+    ...mapMutations(["setIdUser", "setToken"]),
     async save() {
       if (this.enableRegister) {
         if (this.$refs.formInside.validate()) {
@@ -226,7 +226,7 @@ export default {
           if (db.data.success) {
             const value = await jwt_decode(db.data.token);
             localStorage.setItem("session", db.data.token);
-            this.setDataUser(value.id);
+            this.setIdUser(value.id);
             this.setToken(db.data.token);
             this.success = db.data.success;
             this.$router.push("/");

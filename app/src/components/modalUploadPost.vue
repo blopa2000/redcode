@@ -3,7 +3,7 @@
     <v-dialog v-model="show">
       <v-card>
         <v-card-title class="headline grey lighten-2" primary-title
-          >Upload publication</v-card-title
+          >Upload post</v-card-title
         >
 
         <v-card-text>
@@ -12,7 +12,7 @@
             ref="form"
             v-model="valid"
             enctype="multipart/form-data"
-            @submit.prevent="uploadPublication"
+            @submit.prevent="uploadPost"
           >
             <v-file-input
               required
@@ -62,7 +62,7 @@ export default {
       loading: false,
       valid: true,
       description: "",
-      publication: [],
+      post: [],
       descriptionRules: [v => !!v || "Description is required"]
     };
   },
@@ -79,21 +79,21 @@ export default {
   },
   methods: {
     ...mapMutations(["setLoading"]),
-    async uploadPublication() {
-      if (this.$refs.form.validate() && this.publication) {
+    async uploadPost() {
+      if (this.$refs.form.validate() && this.post) {
         this.loading = true;
         this.setLoading(true);
         //API web FormData
         let data = new FormData();
 
-        data.append("publicData", this.publication);
+        data.append("post", this.post);
         data.append("description", this.description);
 
-        const values = await axios.post("/functs/publication", data, {
+        const values = await axios.post("/functs/post", data, {
           headers: { Authorization: this.token }
         });
         if (values.data.success) {
-          this.$emit("saveImages", values.data.success);
+          this.$emit("savepost", values.data.success);
         }
         this.loading = false;
         this.setLoading(false);
@@ -107,7 +107,7 @@ export default {
       }
     },
     onFileSelected(file) {
-      this.publication = file;
+      this.post = file;
     }
   }
 };

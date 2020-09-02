@@ -24,7 +24,7 @@ export default {
     const session = await localStorage.getItem("session");
     if (session) {
       const value = await jwt_decode(session);
-      this.setDataUser(value.id);
+      this.setIdUser(value.id);
       this.setToken(session);
     }
   },
@@ -35,7 +35,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(["setDataUser", "setToken", "setActiveNavbar"])
+    ...mapMutations(["setIdUser", "setToken", "setActiveNavbar"])
   }
 };
 </script>
