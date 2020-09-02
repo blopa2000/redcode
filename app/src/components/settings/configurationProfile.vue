@@ -127,7 +127,7 @@
 
 <script>
 import axios from "axios";
-import { mapState } from "vuex";
+import { mapState, mapMutations } from "vuex";
 export default {
   data() {
     return {
@@ -184,17 +184,21 @@ export default {
     ...mapState(["dataUser", "token"])
   },
   methods: {
+    ...mapMutations(["setLoading"]),
     async submitForm() {
       if (this.$refs.form.validate()) {
+        this.setLoading(true);
         const response = await axios.post("/functs/updateUserInfo", this.form, {
           headers: { Authorization: this.token }
         });
         if (response.data.success) {
           this.$emit("updateProfile", this.form);
         }
+        this.setLoading(false);
       }
     },
     async fileAvatar() {
+      this.setLoading(true);
       let data = new FormData();
       data.append("avatar", this.auxFileAvatar);
       const response = await axios.post("/functs/saveAvatar", data, {
@@ -205,6 +209,7 @@ export default {
         this.form.avatar = this.avatar;
         this.$emit("updateProfile", this.form);
       }
+      this.setLoading(false);
     }
   },
   destroyed() {

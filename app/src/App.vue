@@ -5,6 +5,7 @@
       <v-main>
         <router-view />
       </v-main>
+      <loading />
     </v-container>
   </v-app>
 </template>
@@ -13,9 +14,11 @@
 import navbar from "@/components/navbar";
 import jwt_decode from "jwt-decode";
 import { mapMutations } from "vuex";
+import loading from "@/components/loading";
 export default {
   components: {
-    navbar
+    navbar,
+    loading
   },
   async created() {
     const session = await localStorage.getItem("session");
@@ -41,7 +44,4 @@ export default {
 .background {
   background-color: rgb(243, 243, 243) !important;
 }
-/* p,strong{
-  color: azure;
-} */
 </style>

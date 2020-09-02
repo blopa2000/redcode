@@ -2,12 +2,7 @@
   <div>
     <v-row justify="center">
       <v-col cols="11">
-        <v-text-field
-          v-model="comment"
-          :counter="45"
-          label="comment"
-          @keyup.enter="addComment"
-        ></v-text-field>
+        <v-text-field v-model="comment" :counter="45" label="comment" @keyup.enter="addComment"></v-text-field>
       </v-col>
     </v-row>
 
@@ -34,17 +29,15 @@
           </v-tooltip>
 
           <v-list-item-content>
-            <v-list-item-title class="headline">
-              {{ item.dataComment.comment }}
-            </v-list-item-title>
-            <v-list-item-subtitle>
-              {{ item.dataComment.timestamp }}
-            </v-list-item-subtitle>
+            <v-list-item-title class="headline">{{ item.dataComment.comment }}</v-list-item-title>
+            <v-list-item-subtitle>{{ item.dataComment.timestamp }}</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
       </v-card>
     </div>
-    <div v-if="comments == ''" class="text-center">no comment</div>
+    <div v-if="comments == ''" class="text-center">
+      <message :message="message" class="mr-5" />
+    </div>
   </div>
 </template>
 
@@ -52,15 +45,23 @@
 import axios from "axios";
 import { mapState } from "vuex";
 import moment from "moment";
+import message from "@/components/message";
 export default {
   name: "comments",
+  components: {
+    message
+  },
   props: {
     publicationId: String
   },
   data() {
     return {
       comments: [],
-      comment: ""
+      comment: "",
+      message: {
+        text: "no comment, add one",
+        color: "info"
+      }
     };
   },
   computed: {

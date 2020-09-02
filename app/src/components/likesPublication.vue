@@ -1,6 +1,6 @@
 <template>
   <v-card elevation="0">
-    <v-row>
+    <v-row v-if="people != ''">
       <v-col cols="2" v-for="(item, index) of people" :key="index">
         <v-tooltip top>
           <template v-slot:activator="{ on, attrs }">
@@ -14,7 +14,7 @@
               v-on="on"
             >
               <v-avatar>
-                <img :src="item.avatar" alt />
+                <img :src="item.avatar" alt="avatar" />
               </v-avatar>
             </v-btn>
           </template>
@@ -22,19 +22,30 @@
         </v-tooltip>
       </v-col>
     </v-row>
+    <div v-if="people == ''" class="text-center">
+      <message :message="message" class="mr-5" />
+    </div>
   </v-card>
 </template>
 
 <script>
 import axios from "axios";
+import message from "@/components/message"
 export default {
   name: "likesPublication",
+  components:{
+    message,
+  },
   props: {
     reactions: Array
   },
   data() {
     return {
-      people: []
+      people: [],
+      message:{
+        text:"this post has no likes",
+        color:"info"
+      }
     };
   },
   mounted() {

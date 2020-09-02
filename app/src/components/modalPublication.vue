@@ -52,7 +52,7 @@
 
 <script>
 import axios from "axios";
-import { mapState } from "vuex";
+import { mapState, mapMutations } from "vuex";
 export default {
   props: {
     activeModal: Boolean
@@ -78,9 +78,11 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(["setLoading"]),
     async uploadPublication() {
       if (this.$refs.form.validate() && this.publication) {
         this.loading = true;
+        this.setLoading(true);
         //API web FormData
         let data = new FormData();
 
@@ -92,14 +94,9 @@ export default {
         });
         if (values.data.success) {
           this.$emit("saveImages", values.data.success);
-        } else {
-          // this.MessageFloat({
-          //   message :values.data.message,
-          //   show:true,
-          //   value:"warning"
-          // })
         }
         this.loading = false;
+        this.setLoading(false);
         this.show = false;
       } else {
         this.MessageFloat({

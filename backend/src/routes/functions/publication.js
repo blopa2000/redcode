@@ -120,7 +120,7 @@ router.post("/publicationsOfFollow", isLogged, async (req, res) => {
 
       data.push(publication);
     }
-    res.json(data);
+    res.json({values:data,success:true});
   } catch (error) {
     res.json({ message: "get error publicationser", success: false, error });
   }

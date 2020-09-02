@@ -7,7 +7,8 @@ export default new Vuex.Store({
   state: {
     dataUser: "",
     token: "",
-    activeNavbar: ""
+    activeNavbar: "",
+    loading: false
   },
   mutations: {
     setDataUser(state, peyload) {
@@ -18,6 +19,9 @@ export default new Vuex.Store({
     },
     setActiveNavbar(state, peyload) {
       state.activeNavbar = peyload;
+    },
+    setLoading(state, payload) {
+      state.loading = payload;
     }
   },
   actions: {},

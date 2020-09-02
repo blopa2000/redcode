@@ -83,13 +83,16 @@
           </v-col>
         </v-row>
       </div>
-      <div v-else>{{ message }}</div>
       <!-- /publication -->
     </v-container>
-    <!-- componentes -->
-    <v-container v-else>
-      <p class="error--text">{{ message }}</p>
+    <v-container>
+      <message
+        v-if="dataUserpublication == '' || !exists"
+        class="mt-5"
+        :message="message"
+      />
     </v-container>
+    <!-- componentes -->
     <modalPublication
       :activeModal="activeModal"
       @close="activeModal = false"
@@ -114,14 +117,16 @@
 import modalPublication from "@/components/modalPublication";
 import ModalImage from "@/components/modalShowImage";
 import modalConfigProfile from "@/components/settings/modalConfigProfile";
+import message from "@/components/message";
 import axios from "axios";
-import { mapState } from "vuex";
+import { mapState, mapMutations } from "vuex";
 
 export default {
   components: {
     modalPublication,
     modalConfigProfile,
-    ModalImage
+    ModalImage,
+    message
   },
   data() {
     return {
@@ -135,7 +140,7 @@ export default {
       isFollow: false,
       IndexImage: 0,
       following: { true: "unfollow", false: "follow" },
-      message: "",
+      message: {},
       profile: {}
     };
   },
@@ -146,18 +151,21 @@ export default {
     }
   },
   mounted() {
+    this.setLoading(true);
     this.getProfile();
+    this.setLoading(false);
   },
   computed: {
     ...mapState(["dataUser", "token"])
   },
   methods: {
+    ...mapMutations(["setLoading"]),
     async getProfile() {
+      const response = await axios.post(
+        `/functs/getProfile/${this.$route.params.id}`
+      );
       if (this.dataUser == "" || this.dataUser !== this.$route.params.id) {
         //another profile
-        const response = await axios.post(
-          `/functs/getProfile/${this.$route.params.id}`
-        );
 
         this.activeEvent = false;
         if (response.data.success) {
@@ -177,7 +185,12 @@ export default {
             }
           }
         } else {
-          this.message = response.data.message;
+          this.message = {
+            text: `${response.data.message}.....
+            this may be an internal error or the user cannot be found
+            `,
+            color: "error"
+          };
           this.exists = false;
         }
       } else {
@@ -185,28 +198,33 @@ export default {
         this.exists = true;
         this.activeEvent = true;
 
-        const response = await axios.post(
-          `/functs/getProfile/${this.$route.params.id}`
-        );
         if (response.data.success) {
           this.profile = response.data.profile;
         } else {
           this.message = response.data.message;
         }
       }
-      this.getPublications();
+      if (this.exists) this.getPublications();
     },
     async getPublications() {
       this.dataUserpublication = "";
       const response = await axios.post("/functs/publications", {
         id: this.$route.params.id
       });
-
       if (response.data.success) {
         this.dataUserpublication = response.data.publications;
+        if (this.dataUserpublication.length <= 0) {
+          this.message = {
+            text: "Has no posts... upload one",
+            color: "info"
+          };
+        }
       } else {
         this.dataUserpublication = [];
-        this.message = "No hay publicaciones todavia";
+        this.message = {
+          text: response.data.message,
+          color: "info"
+        };
       }
     },
     async UpdateFollow() {

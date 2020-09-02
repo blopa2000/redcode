@@ -3,14 +3,17 @@
     <v-row>
       <v-col col="4"></v-col>
       <v-col col="4">
-        <publication
-          v-for="(item, index) of publications"
-          :key="index"
-          :user="item"
-          :loading="loading"
-          :indexUser="index"
-          @updateLike="updateLike"
-        />
+        <div v-if="publications.length > 0">
+          <publication
+            v-for="(item, index) of publications"
+            :key="index"
+            :user="item"
+            :loading="loading"
+            :indexUser="index"
+            @updateLike="updateLike"
+          />
+        </div>
+        <message :message="messages" />
       </v-col>
       <v-col col="4"></v-col>
     </v-row>
@@ -20,16 +23,19 @@
 <script>
 import { mapState } from "vuex";
 import publication from "@/components/publication";
+import message from "@/components/message";
 import axios from "axios";
 export default {
   name: "Home",
   components: {
-    publication
+    publication,
+    message
   },
   data() {
     return {
       publications: [],
-      loading: false
+      loading: false,
+      messages: {}
     };
   },
   created() {
@@ -50,7 +56,21 @@ export default {
         {},
         { headers: { Authorization: this.token } }
       );
-      this.publications = response.data;
+      if (response.data.success) {
+        this.publications = response.data.values;
+        if (this.publications.length <= 0) {
+          this.messages = {
+            text:
+              "Does not follow anyone yet, search to view their publications",
+            color: "indigo"
+          };
+        } else {
+          this.messages = {
+            text: "Is already up to date",
+            color: "info"
+          };
+        }
+      }
       this.loading = false;
     },
     updateLike(values) {
