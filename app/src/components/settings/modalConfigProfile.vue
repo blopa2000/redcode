@@ -22,10 +22,12 @@
         </v-toolbar>
         <v-card-text color="info">
           <AccessList v-if="billboard == null" @action="billboard = $event" />
-          <configurationProfile
+          <configuration-profile
             v-if="billboard == 'configurationProfile'"
             @updateProfile="updateProfile"
           />
+
+          <change-password v-if="billboard == 'changePassword'" />
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -35,10 +37,12 @@
 <script>
 import AccessList from "./AccessList";
 import configurationProfile from "./configurationProfile";
+import changePassword from "./changePassword";
 export default {
   components: {
     AccessList,
-    configurationProfile
+    configurationProfile,
+    changePassword
   },
   props: {
     activeModalConfig: Boolean
@@ -62,6 +66,9 @@ export default {
     back() {
       switch (this.billboard) {
         case "configurationProfile":
+          this.billboard = null;
+          break;
+        case "changePassword":
           this.billboard = null;
           break;
       }

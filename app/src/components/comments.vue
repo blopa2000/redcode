@@ -78,9 +78,6 @@ export default {
       }
     };
   },
-  computed: {
-    ...mapState(["token"])
-  },
   async mounted() {
     this.getComments();
   },
@@ -88,6 +85,9 @@ export default {
     postId() {
       this.getComments();
     }
+  },
+  computed: {
+    ...mapState(["token"])
   },
   methods: {
     async addComment() {

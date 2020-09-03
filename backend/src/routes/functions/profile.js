@@ -7,6 +7,7 @@ import fs from "fs-extra";
 import { isLogged } from "../../helpers/middlewares";
 import { check, validationResult } from "express-validator";
 import { serverUri } from "../../keys";
+import bcrypt from "../../helpers/libs";
 
 //mongo
 import { user, follows } from "../../models/mongo";
@@ -47,7 +48,11 @@ router.post(
         { new: true }
       );
       if (updateAvatarUser != null) {
-        return res.status(200).json({ message: "avatar save", success: true,avatar:updateAvatarUser.avatar });
+        return res.status(200).json({
+          message: "avatar save",
+          success: true,
+          avatar: updateAvatarUser.avatar,
+        });
       }
       return res.json({ message: "internar error", success: false });
     } else {
@@ -69,21 +74,22 @@ router.post(
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res
-        .json({ success: false, status: 404, errors: errors.array() });
+      return res.json({ success: false, status: 404, errors: errors.array() });
     }
     const decoded = req.token;
     try {
-
-      const updateUser = await user.updateOne({ _id: decoded._id }, {
-        username:req.body.username,
-        firstName:req.body.firstName,
-        lastName:req.body.lastName,
-        email:req.body.email,
-        dateBirth:req.body.dateBirth,
-        sex:req.body.sex,
-        description:req.body.description
-      });
+      const updateUser = await user.updateOne(
+        { _id: decoded._id },
+        {
+          username: req.body.username,
+          firstName: req.body.firstName,
+          lastName: req.body.lastName,
+          email: req.body.email,
+          dateBirth: req.body.dateBirth,
+          sex: req.body.sex,
+          description: req.body.description,
+        }
+      );
 
       if (updateUser.nModified) {
         return res.json({
@@ -91,8 +97,7 @@ router.post(
           message: "update information successfully",
         });
       }
-      return res
-        .json({ success: false, message: "update failed information" });
+      return res.json({ success: false, message: "update failed information" });
     } catch (error) {
       return res
         .status(500)
@@ -103,15 +108,15 @@ router.post(
 
 //para visitar perfiles
 router.post("/getProfile/:id", async (req, res) => {
-  const decoded = req.params.id
+  const decoded = req.params.id;
   try {
     const profile = await user.findOne({ _id: decoded });
     if (profile != null) {
-      return res.json({message:"user found",success:true,profile})
+      return res.json({ message: "user found", success: true, profile });
     }
-    return res.json({message:"user not found",success:false})
+    return res.json({ message: "user not found", success: false });
   } catch (error) {
-    res.json({message:"internal error",success:false})
+    res.json({ message: "internal error", success: false });
   }
 });
 
@@ -169,6 +174,33 @@ router.post("/isFollowing", isLogged, async (req, res) => {
   } catch (error) {
     return res.json({ message: "internal error", success: false });
   }
+});
+
+router.post("/changePassword", isLogged, async (req, res) => {
+  const decoded = req.token;
+  const { CurrentPassword, newPassword } = req.body;
+  const verifyPassword = await bcrypt.mathPassword(
+    CurrentPassword,
+    decoded.password
+  );
+  if (verifyPassword) {
+    const password = await bcrypt.encrypPassword(newPassword);
+    await user.updateOne({ _id: decoded._id }, { password });
+    res.json({ message: "change password successfully", success: true });
+  } else {
+    res.json({
+      message: "the current password is not that of this user",
+      success: false,
+    });
+  }
+});
+
+router.post("/searchUser", async (req, res) => {
+  const { searchUsers } = req.body;
+
+  const users = await user.find({ $text: { $search: searchUsers } }).limit(10);
+
+  res.json(users);
 });
 
 module.exports = router;

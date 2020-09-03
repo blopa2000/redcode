@@ -112,7 +112,7 @@
                       dense
                       outlined
                       :type="typeMessage"
-                      v-for="(item, index) of dataMessage"
+                      v-for="(item, index) of dataMessageRegister"
                       :key="index"
                       >{{ item.message }}</v-alert
                     >
@@ -141,6 +141,7 @@ export default {
       success: true,
       enableRegister: false,
       dataMessage: "",
+      dataMessageRegister: "",
       typeMessage: "error",
       username: "blopaDev",
       password: "1234322",
@@ -207,10 +208,10 @@ export default {
             } else {
               this.typeMessage = "error";
               this.success = response.data.success;
-              this.dataMessage = response.data.error.errors;
+              this.dataMessageRegister = response.data.error.errors;
               setTimeout(() => {
                 this.success = true;
-                this.dataMessage = "";
+                this.dataMessageRegister = "";
               }, 5000);
             }
           } catch (error) {

@@ -18,7 +18,7 @@ module.exports = (app) => {
   //router
   Functions(app);
 
-  // Middleware para Vue.js router modo history
+  // Middleware for Vuejs router mode history
   app.use(history());
   app.use(express.static(path.join(__dirname, "../public")));
 

@@ -12,5 +12,5 @@ mongoose
     console.error("error en la coneccion de mongodb");
   });
 
-// evita este error que sale por el unique (node:5456) DeprecationWarning: collection.ensureIndex is deprecated. Use createIndexes instead.
+// avoid this error that comes out for the unique (node:5456) DeprecationWarning: collection.ensureIndex is deprecated. Use createIndexes instead.
 mongoose.set("useCreateIndex", true);

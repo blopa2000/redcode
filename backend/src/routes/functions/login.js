@@ -7,8 +7,6 @@ import bcrypt from "../../helpers/libs";
 import { tokenKey } from "../../keys";
 
 import jwt from "jsonwebtoken";
-//si son varios midlewares se ponen dentro de [middleware1,middleware2]
-//y se puede modificar la informacion que biene en req.body.item = 2
 
 const router = Router();
 router.post(

@@ -16,6 +16,21 @@
         </v-list-item-content>
       </v-list-item>
       <v-divider />
+
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title>user info</v-list-item-title>
+          <v-list-item-subtitle
+            class="d-flex align-center"
+            @click="actions('changePassword')"
+          >
+            <v-btn icon color="accent" class="mr-5">
+              <v-icon>fas fa-unlock</v-icon> </v-btn
+            >Change password
+          </v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+      <v-divider />
     </v-list>
   </div>
 </template>
@@ -28,14 +43,8 @@ export default {
   },
   methods: {
     actions(action) {
-      switch (action) {
-        case "configurationProfile":
-          this.modelActions = action;
-          this.$emit("action", action);
-          break;
-        default:
-          break;
-      }
+      this.modelActions = action;
+      this.$emit("action", action);
     }
   }
 };

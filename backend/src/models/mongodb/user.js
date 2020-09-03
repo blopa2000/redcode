@@ -7,7 +7,7 @@ var email_match = [
   "Email is not valid",
 ];
 
-const avatarDefaut = `${serverUri}/images/icons/default.jpg`
+const avatarDefaut = `${serverUri}/images/icons/default.png`
 let user_schema = new Schema({
   username: {
     type: String,
@@ -67,6 +67,8 @@ let user_schema = new Schema({
 });
 //campo unico
 user_schema.plugin(uniqued, { message: "Error,expected {PATH} to be unique" });
+
+user_schema.index({username:"text"})
 
 user_schema.virtual("fullname").get(function () {
   return `${this.firstName} ${this.lastName}`;

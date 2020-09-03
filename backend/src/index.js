@@ -1,8 +1,7 @@
-// const express =  require("express");
 import express from "express";
 import config from "./server/config";
 
-//mongodb conexion
+//mongodb Connection
 require("./mongodb");
 
 const app = config(express());

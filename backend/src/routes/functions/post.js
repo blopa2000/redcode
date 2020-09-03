@@ -2,7 +2,7 @@ import { Router } from "express";
 import path from "path";
 import multer from "multer";
 import fs from "fs-extra";
-import moment from "moment";
+
 //validate
 import { isLogged } from "../../helpers/middlewares";
 import { check, validationResult } from "express-validator";
@@ -197,4 +197,5 @@ router.post("/getComments", isLogged, async (req, res) => {
     return res.json({ message: "not comments", success: false });
   }
 });
+
 module.exports = router;

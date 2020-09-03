@@ -146,16 +146,16 @@ export default {
       profile: {}
     };
   },
+  mounted() {
+    this.setLoading(true);
+    this.getProfile();
+    this.setLoading(false);
+  },
   watch: {
     $route(to, from) {
       to, from;
       this.getProfile();
     }
-  },
-  mounted() {
-    this.setLoading(true);
-    this.getProfile();
-    this.setLoading(false);
   },
   computed: {
     ...mapState(["idUser", "token"])
@@ -210,10 +210,17 @@ export default {
       if (response.data.success) {
         this.userPosts = response.data.posts;
         if (this.userPosts.length <= 0) {
-          this.message = {
-            text: "Has no posts... upload one",
-            color: "info"
-          };
+          if (this.idUser !== this.$route.params.id) {
+            this.message = {
+              text: "This user has no uploaded posts",
+              color: "info"
+            };
+          } else {
+            this.message = {
+              text: "Has no posts... upload one",
+              color: "info"
+            };
+          }
         }
       } else {
         this.userPosts = [];

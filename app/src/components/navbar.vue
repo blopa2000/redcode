@@ -9,7 +9,45 @@
     >
       <h1>redcode</h1>
       <v-spacer />
-      <input placeholder="sherch" />
+
+      <v-menu offset-y bottom>
+        <template v-slot:activator="{ on, attrs }">
+          <input
+            placeholder="serch"
+            v-model="search"
+            @keyup="searchUsers"
+            v-bind="attrs"
+            v-on="on"
+          />
+        </template>
+        <v-list v-if="users != ''">
+          <v-list-item
+            v-for="(user, index) of users"
+            :key="index"
+            :to="'/profile/' + user._id"
+          >
+            <v-list-item-title>
+              <v-avatar size="30">
+                <v-img :src="user.avatar">
+                  <template v-slot:placeholder>
+                    <v-row
+                      class="fill-height ma-0"
+                      align="center"
+                      justify="center"
+                    >
+                      <v-progress-circular
+                        indeterminate
+                        color="grey lighten-5"
+                      ></v-progress-circular>
+                    </v-row>
+                  </template>
+                </v-img>
+              </v-avatar>
+              {{ user.username }}
+            </v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
       <v-spacer />
 
       <v-btn class="m-2" text icon color="red lighten-2" to="/">
@@ -44,8 +82,15 @@
 
 <script>
 import { mapState, mapMutations } from "vuex";
+import axios from "axios";
 export default {
   name: "navbar",
+  data() {
+    return {
+      search: "",
+      users: []
+    };
+  },
   computed: {
     ...mapState(["idUser", "activeNavbar"])
   },
@@ -55,7 +100,15 @@ export default {
       localStorage.removeItem("session");
       this.setIdUser("");
       this.$router.push("/login");
+    },
+    async searchUsers() {
+      const response = await axios.post("/functs/searchUser", {
+        searchUsers: this.search
+      });
+      this.users = response.data;
     }
   }
 };
 </script>
+
+<style></style>

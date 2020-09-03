@@ -20,24 +20,6 @@ libs.encrypPassword = async (pass) => {
 
 libs.mathPassword = async (pass, savePass) => {
   try {
-    // bcrypt.compare(pass,savePass, (err, data) => {
-    //     //if error than throw error
-    //     if (err) throw err
-
-    //     //if both match than you can do anything
-    //     if (data) {
-
-    //         value = {
-    //             message:"is logged",
-    //             success:true
-    //         }
-    //     } else {
-    //         value = {
-    //             message:"Incorrect password",
-    //             success:false
-    //         }
-    //     }
-    // });
     const value = await bcrypt.compare(pass, savePass);
     return value;
   } catch (error) {
