@@ -10,7 +10,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
     "@fortawesome/fontawesome-free": "^5.8.2",
-    "axios": "^0.20.0",
+    "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "jwt-decode": "^2.2.0",
     "moment": "^2.27.0",
